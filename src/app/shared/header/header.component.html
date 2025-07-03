@@ -3,19 +3,28 @@
   <div class="flex items-center gap-2 text-xl font-bold text-primary">
     <img src="assets/images/logo1-sinfondo.png" alt="Logo" class="w-16 h-12 object-contain" />
     <span>Renting Motors B&A</span>
+    <!-- Puedes agregar aquí un slogan o animación creativa si lo deseas -->
   </div>
 
-  <!-- Menú -->
-  <ul class="hidden md:flex gap-6 text-sm text-primary font-medium">
-    <li><a (click)="goHome()" routerLinkActive="font-bold text-yellow-400" class="hover:text-yellow-400 cursor-pointer">Inicio</a></li>
-    <li><a (click)="goEmpleados()" routerLinkActive="font-bold text-yellow-400" class="hover:text-yellow-400 cursor-pointer">Empleados</a></li>
-    <li><a (click)="goPagos()" routerLinkActive="font-bold text-yellow-400" class="hover:text-yellow-400 cursor-pointer">Pagos</a></li>
-    <li><a (click)="goMisMotos()" routerLinkActive="font-bold text-yellow-400" class="hover:text-yellow-400 cursor-pointer">Mis motos</a></li>
-  </ul>
 
-  <!-- Auth links -->
-  <div class="flex gap-4 text-sm text-primary font-semibold">
-    <h2 class="hover:text-white cursor-pointer">Iniciar sesión</h2>
-    <h2 class="hover:text-white cursor-pointer">Registrarme</h2>
+
+  <!-- Menú de navegación (solo si autenticado) -->
+  <!-- <ng-container *ngIf="showMenu()">
+    <ul class="flex gap-6 text-base font-semibold">
+      <li><a routerLink="/dashboard" routerLinkActive="underline text-white">Dashboard</a></li>
+      <li><a routerLink="/motos" routerLinkActive="underline text-white">Inventario</a></li>
+      <li><a routerLink="/empleados" routerLinkActive="underline text-white">Usuarios</a></li>
+      <li><a routerLink="/pagos" routerLinkActive="underline text-white">Pagos</a></li>
+      <li><a routerLink="/historial" routerLinkActive="underline text-white">Historial</a></li>
+      <li><a routerLink="/documentacion" routerLinkActive="underline text-white">Documentación</a></li>
+    </ul>
+  </ng-container> -->
+  <!-- SIEMPRE mostrar el botón en Home -->
+  <div class="flex gap-4 text-sm text-primary font-semibold" *ngIf="router.url === '/'">
+    <button class="hover:text-white cursor-pointer" (click)="goLogin()">Iniciar sesión</button>
+  </div>
+  <!-- Mostrar el botón solo si no está autenticado y no está en Home -->
+  <div class="flex gap-4 text-sm text-primary font-semibold" *ngIf="!showMenu() && router.url !== '/'">
+    <button class="hover:text-white cursor-pointer" (click)="goHome()">Volver al inicio</button>
   </div>
 </nav>

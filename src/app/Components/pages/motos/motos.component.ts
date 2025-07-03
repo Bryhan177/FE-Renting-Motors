@@ -13,6 +13,25 @@ import Swal from 'sweetalert2';
   styleUrl: './motos.component.css'
 })
 export class MotosComponent {
+
+  // Detecta si el SOAT vence en menos de 30 días
+  soatProximoAVencer(fecha: string): boolean {
+    if (!fecha) return false;
+    const hoy = new Date();
+    const vencimiento = new Date(fecha);
+    const diferencia = (vencimiento.getTime() - hoy.getTime()) / (1000 * 60 * 60 * 24);
+    return diferencia >= 0 && diferencia < 30;
+  }
+
+  // Detecta si la tecnomecánica vence en menos de 30 días
+  tecnomecanicaProximaAVencer(fecha: string): boolean {
+    if (!fecha) return false;
+    const hoy = new Date();
+    const vencimiento = new Date(fecha);
+    const diferencia = (vencimiento.getTime() - hoy.getTime()) / (1000 * 60 * 60 * 24);
+    return diferencia >= 0 && diferencia < 30;
+  }
+
   modalVisible: boolean = false;
 motoEditada: any = { placa: '', modelo: '', anio: new Date().getFullYear() };
   formularioInvalido: boolean = false;

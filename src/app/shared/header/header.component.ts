@@ -1,30 +1,28 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent {
-  constructor(private router: Router) {
-    // do nothing
-   }
-   goHome() {
+  constructor(public router: Router) {}
+
+  showMenu(): boolean {
+    const ruta = this.router.url;
+    return ruta !== '/' && ruta !== '/login';
+  }
+
+  goHome() {
     this.router.navigate(['']);
   }
-  goEmpleados() {
-    this.router.navigate(['empleados']);
-  }
-  goPagos() {
-    this.router.navigate(['pagos']);
-  }
-  goDashboard() {
-    this.router.navigate(['dashboard']);
-  }
-  goMisMotos() {
-    this.router.navigate(['motos']);
+
+  goLogin() {
+    this.router.navigate(['login']);
   }
 }
+

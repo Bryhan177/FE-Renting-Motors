@@ -51,17 +51,31 @@
         <td class="px-4 py-2">{{ moto.placa }}</td>
         <td class="px-4 py-2">{{ moto.modelo }}</td>
         <td class="px-4 py-2">{{ moto.anio }}</td>
-        <td class="px-4 py-2">{{ moto.soat }}</td>
-        <td class="px-4 py-2">{{ moto.tecnomecanica }}</td>
+        <td class="px-4 py-2">
+  <span [ngClass]="{'bg-red-100 text-red-700 px-2 rounded': soatProximoAVencer(moto.soat)}">
+    {{ moto.soat }}
+    <span *ngIf="soatProximoAVencer(moto.soat)" class="ml-1 animate-pulse">⚠️</span>
+  </span>
+</td>
+        <td class="px-4 py-2">
+  <span [ngClass]="{'bg-red-100 text-red-700 px-2 rounded': tecnomecanicaProximaAVencer(moto.tecnomecanica)}">
+    {{ moto.tecnomecanica }}
+    <span *ngIf="tecnomecanicaProximaAVencer(moto.tecnomecanica)" class="ml-1 animate-pulse">⚠️</span>
+  </span>
+</td>
         <td class="px-4 py-2">
           <span [ngClass]="{
-            'text-green-600': moto.estado === 'Activa',
-            'text-yellow-500': moto.estado === 'En mantenimiento',
-            'text-gray-500': moto.estado === 'Inactiva'
-          }">{{ moto.estado }}</span>
+            'text-green-600 font-bold': moto.estado === 'Activa',
+            'text-yellow-500 font-bold': moto.estado === 'En mantenimiento',
+            'text-gray-500 font-bold': moto.estado === 'Inactiva' }">
+            <span *ngIf="moto.estado === 'Activa'">🟢</span>
+            <span *ngIf="moto.estado === 'En mantenimiento'">🟡</span>
+            <span *ngIf="moto.estado === 'Inactiva'">⚪</span>
+            {{ moto.estado }}
+          </span>
         </td>
         <td class="px-4 py-2">
-          <button (click)="abrirModal(moto)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded">Editar</button>
+          <button (click)="abrirModal(moto)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded flex items-center gap-1"><span>✏️</span> Editar</button>
         </td>
       </tr>
     </tbody>

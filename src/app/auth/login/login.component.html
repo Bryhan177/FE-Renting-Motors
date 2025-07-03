@@ -6,34 +6,24 @@
       <p class="text-gray-500 text-sm">Inicia sesión para continuar</p>
     </div>
 
-    <form class="space-y-4">
+    <form class="space-y-4" (ngSubmit)="onLogin()" #loginForm="ngForm">
       <div>
         <label for="email" class="block text-gray-700 font-medium">Correo electrónico</label>
-        <input type="email" id="email" placeholder="ejemplo@email.com"
+        <input type="email" id="email" name="email" [(ngModel)]="email" required placeholder="admin@gmail.com"
                class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition duration-300" />
       </div>
 
       <div>
         <label for="password" class="block text-gray-700 font-medium">Contraseña</label>
-        <input type="password" id="password" placeholder="••••••••"
+        <input type="password" id="password" name="password" [(ngModel)]="password" required placeholder="••••••••"
                class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition duration-300" />
-      </div>
-
-      <div class="flex justify-between items-center text-sm">
-        <label class="flex items-center gap-2">
-          <input type="checkbox" class="text-secondary"> Recuérdame
-        </label>
-        <a href="#" class="text-secondary hover:underline">¿Olvidaste tu contraseña?</a>
       </div>
 
       <button type="submit"
               class="w-full bg-secondary text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
         Iniciar Sesión
       </button>
+      <div *ngIf="error" class="text-red-600 text-center mt-2">{{ error }}</div>
     </form>
-
-    <p class="text-center text-gray-500 text-sm">¿No tienes cuenta?
-      <a href="#" class="text-secondary font-medium hover:underline">Regístrate</a>
-    </p>
   </div>
 </section>

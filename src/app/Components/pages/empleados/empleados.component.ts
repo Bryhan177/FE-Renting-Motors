@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { Empleado } from '../../../shared/interfaces/empleados';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-empleados',
@@ -57,30 +58,88 @@ export class EmpleadosComponent {
   };
 
   editarEmpleado(empleado: Empleado) {
+    this.modoEdicion = true;
     this.empleadoEditando = { ...empleado };
     this.nuevoEmpleado = { ...empleado };
-    this.modoEdicion = true;
     this.mostrarModal = true;
   }
+  abrirModal() {
+    this.mostrarModal = true;
+    this.nuevoEmpleado = {
+      nombre: '',
+      cedula: '',
+      telefono: '',
+      moto: '',
+      descanso: '',
+    };
+    this.modoEdicion = false;
+    this.empleadoEditando = null;
+  }
+
   agregarEmpleado() {
+    if (!this.nuevoEmpleado.nombre || !this.nuevoEmpleado.cedula || !this.nuevoEmpleado.telefono || !this.nuevoEmpleado.descanso) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos requeridos incompletos',
+        text: 'Por favor completa todos los campos obligatorios',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1800,
+        background: '#FF4136',
+        color: 'white',
+      });
+      return;
+    }
+
     if (this.modoEdicion && this.empleadoEditando) {
-      const index = this.empleados.findIndex(
-        (e) => e.cedula === this.empleadoEditando!.cedula
-      );
+      const index = this.empleados.findIndex((e: Empleado) => e.cedula === this.empleadoEditando!.cedula);
       if (index !== -1) {
         this.empleados[index] = { ...this.nuevoEmpleado };
       }
+      Swal.fire({
+        icon: 'success',
+        title: 'Empleado actualizado',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1300,
+        background: '#22C55E',
+        color: 'white',
+      });
     } else {
       this.empleados.push({ ...this.nuevoEmpleado });
+      Swal.fire({
+        icon: 'success',
+        title: 'Empleado agregado',
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 1300,
+        background: '#22C55E',
+        color: 'white',
+      });
     }
+    this.mostrarModal = false;
     this.cerrarModal();
+  }
+
+  cerrarModal() {
+    this.mostrarModal = false;
+    this.nuevoEmpleado = {
+      nombre: '',
+      cedula: '',
+      telefono: '',
+      moto: '',
+      descanso: '',
+    };
+    this.modoEdicion = false;
+    this.empleadoEditando = null;
   }
 
   abrirPagos(empleado: Empleado) {
     this.empleadoSeleccionado = empleado;
     this.mostrarPagos = true;
-
-    // Asegúrate de que tiene historial de pagos
     if (!empleado.pagos) {
       empleado.pagos = [];
     }
@@ -88,13 +147,12 @@ export class EmpleadosComponent {
 
   registrarPago() {
     const semanaActual = this.obtenerSemanaActual();
-    const yaRegistrado = this.empleadoSeleccionado?.pagos?.some(p => p.semana === semanaActual);
-
+    const yaRegistrado = this.empleadoSeleccionado?.pagos?.some((p: { semana: string }) => p.semana === semanaActual);
     if (!yaRegistrado && this.empleadoSeleccionado) {
       this.empleadoSeleccionado.pagos!.push({
         semana: semanaActual,
         monto: 220000,
-        pagado: true
+        pagado: true,
       });
     }
   }
@@ -114,33 +172,16 @@ export class EmpleadosComponent {
 
   getResumenSemanal() {
     const semanaActual = this.obtenerSemanaActual();
-    return this.empleados.map(empleado => {
-      const pago = empleado.pagos?.find(p => p.semana === semanaActual);
+    return this.empleados.map((empleado: Empleado) => {
+      const pago = empleado.pagos?.find((p: { semana: string }) => p.semana === semanaActual);
       return {
         nombre: empleado.nombre,
         cedula: empleado.cedula,
         descanso: empleado.descanso,
         pagado: pago?.pagado ?? false,
-        monto: pago?.monto ?? 0
+        monto: pago?.monto ?? 0,
       };
     });
   }
 
-
-  abrirModal() {
-    this.mostrarModal = true;
-  }
-
-  cerrarModal() {
-    this.mostrarModal = false;
-    this.nuevoEmpleado = {
-      nombre: '',
-      cedula: '',
-      telefono: '',
-      moto: '',
-      descanso: '',
-    };
-    this.modoEdicion = false;
-    this.empleadoEditando = null;
-  }
 }

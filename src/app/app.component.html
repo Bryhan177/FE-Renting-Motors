@@ -1,6 +1,8 @@
 <app-header></app-header>
 <div class="flex">
-  <!-- <app-sidebar></app-sidebar> -->
+  <ng-container *ngIf="showSidebar()">
+    <app-sidebar></app-sidebar>
+  </ng-container>
   <main class="flex-1 p-4">
     <router-outlet></router-outlet>
   </main>

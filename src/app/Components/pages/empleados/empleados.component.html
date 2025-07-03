@@ -1,7 +1,7 @@
 <div class="flex justify-between items-center mb-4">
   <h2 class="text-2xl font-bold">📋 Empleados</h2>
-  <button (click)="abrirModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-    ➕ Agregar Empleado
+  <button (click)="abrirModal()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded flex items-center gap-2">
+    <span>➕</span> <span>Agregar Empleado</span>
   </button>
 </div>
 
@@ -19,42 +19,42 @@
     </thead>
     <tbody>
       <!-- 🔁 Aquí irán los empleados (más adelante lo haremos dinámico) -->
-      <tr class="border-t" *ngFor="let empleado of empleados">
+      <tr class="border-t" *ngFor="let empleado of empleados" [ngClass]="{'bg-red-50': !empleado.moto}">
         <td class="px-4 py-2">{{ empleado.nombre }}</td>
         <td class="px-4 py-2">{{ empleado.cedula }}</td>
         <td class="px-4 py-2">{{ empleado.telefono }}</td>
-        <td class="px-4 py-2">{{ empleado.moto }}</td>
-        <td class="px-4 py-2">{{ empleado.descanso }}</td>
         <td class="px-4 py-2">
-          <button (click)="abrirPagos(empleado)" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded mr-2">
-            Pagos
-          </button>
-          <button (click)="editarEmpleado(empleado)" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">Editar</button>
+          <span *ngIf="empleado.moto; else sinMoto">{{ empleado.moto }}</span>
+          <ng-template #sinMoto><span class="text-red-500 font-semibold">Sin moto</span></ng-template>
+        </td>
+        <td class="px-4 py-2">{{ empleado.descanso }}</td>
+        <td class="px-4 py-2 flex gap-2">
+          <button (click)="abrirPagos(empleado)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded flex items-center gap-1"><span>💰</span>Pagos</button>
+          <button (click)="editarEmpleado(empleado)" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded flex items-center gap-1"><span>✏️</span>Editar</button>
         </td>
       </tr>
     </tbody>
   </table>
 </div>
 
-<!-- Modal -->
- <div>
-   <div *ngIf="mostrarModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-     <div class="bg-white p-6 rounded shadow-md w-full max-w-md">
-       <h2 class="text-xl font-semibold mb-4">Agregar Empleado</h2>
-
-  <form (ngSubmit)="agregarEmpleado()" #formEmpleado="ngForm" class="space-y-3">
-    <input type="text" [(ngModel)]="nuevoEmpleado.nombre" name="nombre" placeholder="Nombre" required class="w-full p-2 border rounded" />
-    <input type="text" [(ngModel)]="nuevoEmpleado.cedula" name="cedula" placeholder="Cédula" required class="w-full p-2 border rounded" />
-    <input type="text" [(ngModel)]="nuevoEmpleado.telefono" name="telefono" placeholder="Teléfono" required class="w-full p-2 border rounded" />
-    <input type="text" [(ngModel)]="nuevoEmpleado.moto" name="moto" placeholder="Moto (placa)" required class="w-full p-2 border rounded" />
-    <input type="text" [(ngModel)]="nuevoEmpleado.descanso" name="descanso" placeholder="Día de descanso" required class="w-full p-2 border rounded" />
-
-    <div class="flex justify-between">
-      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar</button>
-      <button type="button" (click)="cerrarModal()" class="text-red-500">Cancelar</button>
-    </div>
-  </form>
-</div>
+<!-- Modal unificado para agregar/editar empleado -->
+<div *ngIf="mostrarModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+  <div class="bg-white p-6 rounded shadow-md w-full max-w-md">
+    <h2 class="text-xl font-semibold mb-4">{{ modoEdicion ? 'Editar Empleado' : 'Agregar Empleado' }}</h2>
+    <form (ngSubmit)="agregarEmpleado()" #formEmpleado="ngForm" class="space-y-3">
+      <input type="text" [(ngModel)]="nuevoEmpleado.nombre" name="nombre" placeholder="Nombre" required class="w-full p-2 border rounded" [class.border-red-500]="formEmpleado.submitted && !nuevoEmpleado.nombre" />
+      <input type="text" [(ngModel)]="nuevoEmpleado.cedula" name="cedula" placeholder="Cédula" required class="w-full p-2 border rounded" [class.border-red-500]="formEmpleado.submitted && !nuevoEmpleado.cedula" />
+      <input type="text" [(ngModel)]="nuevoEmpleado.telefono" name="telefono" placeholder="Teléfono" required class="w-full p-2 border rounded" [class.border-red-500]="formEmpleado.submitted && !nuevoEmpleado.telefono" />
+      <input type="text" [(ngModel)]="nuevoEmpleado.moto" name="moto" placeholder="Moto (placa)" class="w-full p-2 border rounded" />
+      <input type="text" [(ngModel)]="nuevoEmpleado.descanso" name="descanso" placeholder="Día de descanso" required class="w-full p-2 border rounded" [class.border-red-500]="formEmpleado.submitted && !nuevoEmpleado.descanso" />
+      <div class="flex justify-between">
+        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 flex items-center gap-1">
+          <span>💾</span> {{ modoEdicion ? 'Guardar cambios' : 'Guardar' }}
+        </button>
+        <button type="button" (click)="cerrarModal()" class="text-red-500">Cancelar</button>
+      </div>
+    </form>
+  </div>
 </div>
 <div *ngIf="mostrarPagos" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
 <div class="bg-white p-6 rounded shadow-md w-96">
@@ -73,7 +73,7 @@
   <button (click)="cerrarPagos()" class="text-red-500 hover:underline">Cerrar</button>
 </div>
 </div>
-</div>
+
 
 <!-- Resumen de Pagos -->
 <h2 class="text-xl font-bold mt-10 mb-4">Resumen de Pagos - Semana {{ obtenerSemanaActual() }}</h2>
