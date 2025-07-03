@@ -1,7 +1,8 @@
 a {
+  cursor: pointer;
   transition: color 0.2s ease;
 }
 
 a:hover {
-  color: #facc15; /* amarillo */
+  color: #fff; /* amarillo */
 }

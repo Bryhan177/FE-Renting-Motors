@@ -1,17 +1,21 @@
-<nav class="bg-gray-800 text-white px-6 py-4 flex justify-between items-center">
-  <div class="text-xl font-bold">
-    🚀 MotoGestión
+<nav class="bg-secondary text-white px-6 py-3 flex justify-between items-center shadow-md">
+  <!-- Logo -->
+  <div class="flex items-center gap-2 text-xl font-bold text-primary">
+    <img src="assets/images/logo1-sinfondo.png" alt="Logo" class="w-16 h-12 object-contain" />
+    <span>Renting Motors B&A</span>
   </div>
 
-  <ul class="hidden md:flex gap-6 text-sm">
-    <li><a routerLink="/" routerLinkActive="font-bold text-yellow-400">Inicio</a></li>
-    <li><a routerLink="/empleados" routerLinkActive="font-bold text-yellow-400">Empleados</a></li>
-    <li><a routerLink="/pagos" routerLinkActive="font-bold text-yellow-400">Pagos</a></li>
-    <li><a routerLink="/dashboard" routerLinkActive="font-bold text-yellow-400">Dashboard</a></li>
+  <!-- Menú -->
+  <ul class="hidden md:flex gap-6 text-sm text-primary font-medium">
+    <li><a (click)="goHome()" routerLinkActive="font-bold text-yellow-400" class="hover:text-yellow-400 cursor-pointer">Inicio</a></li>
+    <li><a (click)="goEmpleados()" routerLinkActive="font-bold text-yellow-400" class="hover:text-yellow-400 cursor-pointer">Empleados</a></li>
+    <li><a (click)="goPagos()" routerLinkActive="font-bold text-yellow-400" class="hover:text-yellow-400 cursor-pointer">Pagos</a></li>
+    <li><a (click)="goMisMotos()" routerLinkActive="font-bold text-yellow-400" class="hover:text-yellow-400 cursor-pointer">Mis motos</a></li>
   </ul>
 
-  <div class="md:hidden">
-    <!-- Aquí puedes agregar el menú móvil si lo deseas luego -->
-    <span>📱</span>
+  <!-- Auth links -->
+  <div class="flex gap-4 text-sm text-primary font-semibold">
+    <h2 class="hover:text-white cursor-pointer">Iniciar sesión</h2>
+    <h2 class="hover:text-white cursor-pointer">Registrarme</h2>
   </div>
 </nav>
