@@ -1,8 +1,8 @@
 <nav class="bg-secondary text-white px-6 py-3 flex justify-between items-center shadow-md">
   <!-- Logo -->
   <div class="flex items-center gap-2 text-xl font-bold text-primary">
-    <img src="assets/images/prueba3.png" alt="Logo" class="w-28 h-20 object-contain" />
-    <span>Renting Motors B&A</span>
+    <img src="assets/images/prueba1.png" alt="Logo" class="w-28 h-20 object-contain" />
+    <h1>Renting Motors B&A</h1>
     <!-- Puedes agregar aquí un slogan o animación creativa si lo deseas -->
   </div>
 
@@ -21,7 +21,9 @@
   </ng-container> -->
   <!-- SIEMPRE mostrar el botón en Home -->
   <div class="flex gap-4 text-sm text-primary font-semibold" *ngIf="router.url === '/'">
-    <button class="hover:text-white cursor-pointer" (click)="goLogin()">Iniciar sesión</button>
+    <button class="hover:text-white cursor-pointer" (click)="goLogin()">
+      <img src="assets/images/user.png" alt="" class="w-16 h-16 inline-block mr-1 animate-pulse">
+    </button>
   </div>
   <!-- Mostrar el botón solo si no está autenticado y no está en Home -->
   <div class="flex gap-4 text-sm text-primary font-semibold" *ngIf="!showMenu() && router.url !== '/'">

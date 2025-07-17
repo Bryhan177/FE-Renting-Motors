@@ -1,31 +1,77 @@
-<aside class="h-screen w-64 bg-[#000000] text-white flex flex-col shadow-lg sticky top-0">
-  <div class="flex items-center justify-center h-20 border-b border-gray-700">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/9/90/Logo-arbol-fondo-negro.jpg" alt="Logo" class="h-12 w-12 mr-2">
-    <span class="text-xl font-bold tracking-wide">Bryhan Stif</span>
-  </div>
-  <nav class="flex-1 py-8 px-4 space-y-2 cursor-pointer">
-    <a (click)="goDashboard()" routerLinkActive="bg-secondary text-white" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition">
-      <span>📊</span> <span>Dashboard</span>
-    </a>
-    <a (click)="goMotos()" routerLinkActive="bg-secondary text-white" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition">
-      <span>🛵</span> <span>Inventario Vehículos</span>
-    </a>
-    <a (click)="goEmpleados()" routerLinkActive="bg-secondary text-white" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition">
-      <span>🧑‍💼</span> <span>Usuarios</span>
-    </a>
-    <a (click)="goPagos()" routerLinkActive="bg-secondary text-white" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition">
-      <span>💰</span> <span>Pagos</span>
-    </a>
-    <a (click)="goHistorial()" routerLinkActive="bg-secondary text-white" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition">
-      <span>📜</span> <span>Historial Vehículo</span>
-    </a>
-    <a (click)="goDocumentacion()" routerLinkActive="bg-secondary text-white" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition">
-      <span>📄</span> <span>Documentación</span>
-    </a>
-  </nav>
-  <div class="p-4 border-t border-gray-700">
-    <button class="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition" (click)="logout()">
-      <span>🚪</span> <span>Cerrar sesión</span>
+<div class="flex h-screen">
+  <aside
+    [ngClass]="{
+      'translate-x-0': showSidebar,
+      '-translate-x-full': !showSidebar
+    }"
+    class="fixed md:relative top-0 left-0 h-full w-64 bg-black text-white shadow-lg transform transition-transform duration-300 ease-in-out z-50 md:translate-x-0"
+  >
+    <div class="flex items-center justify-center h-20 border-b border-gray-700">
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/9/90/Logo-arbol-fondo-negro.jpg"
+        alt="Logo"
+        class="h-12 w-12 mr-2"
+      />
+      <span class="text-xl font-bold tracking-wide">Bryhan Stif</span>
+    </div>
+    <span class="text-2xl cursor-pointer right-0 absolute p-4" (click)="toggleSidebar()">  ☰ </span>
+    <nav class="flex-1 py-8 px-4 space-y-2 cursor-pointer">
+      <a
+        (click)="goDashboard()"
+        routerLinkActive="bg-secondary text-white"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
+      >
+        <span>📊</span> <span>Dashboard</span>
+      </a>
+      <a
+        (click)="goMotos()"
+        routerLinkActive="bg-secondary text-white"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
+      >
+        <span>🛵</span> <span>Inventario Vehículos</span>
+      </a>
+      <a
+        (click)="goEmpleados()"
+        routerLinkActive="bg-secondary text-white"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
+      >
+        <span>🧑‍💼</span> <span>Usuarios</span>
+      </a>
+      <a
+        (click)="goPagos()"
+        routerLinkActive="bg-secondary text-white"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
+      >
+        <span>💰</span> <span>Pagos</span>
+      </a>
+      <a
+        (click)="goHistorial()"
+        routerLinkActive="bg-secondary text-white"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
+      >
+        <span>📜</span> <span>Historial Vehículo</span>
+      </a>
+      <a
+        (click)="goDocumentacion()"
+        routerLinkActive="bg-secondary text-white"
+        class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
+      >
+        <span>📄</span> <span>Documentación</span>
+      </a>
+    </nav>
+    <div class="p-4 border-t border-gray-700">
+      <button
+        class="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition"
+        (click)="logout()"
+      >
+        <span>🚪</span> <span>Cerrar sesión</span>
+      </button>
+    </div>
+  </aside>
+
+  <div class="flex-1 ml-0 md: bg-white overflow-auto">
+    <button class="md:hidden p-4 text-black" (click)="toggleSidebar()">
+      ☰
     </button>
   </div>
-</aside>
+</div>

@@ -1,15 +1,18 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
 
 export class SidebarComponent {
+  showSidebar: boolean = false;
+
   constructor(private router: Router) {}
 
   logout() {
@@ -33,6 +36,9 @@ export class SidebarComponent {
   }
   goDocumentacion() {
     this.router.navigate(['/documentacion']);
+  }
+  toggleSidebar() {
+    this.showSidebar = !this.showSidebar;
   }
 }
 
