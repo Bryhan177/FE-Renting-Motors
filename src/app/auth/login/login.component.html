@@ -1,29 +1,100 @@
-<section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary to-gray-900 px-4">
-  <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full space-y-6 animate-fade-in">
-    <div class="text-center">
-      <img src="assets/images/prueba3.png" alt="Logo" class="mx-auto w-full h-64 mb-4">
-      <h2 class="text-3xl font-bold text-gray-800">¡Bienvenido de nuevo! 👋</h2>
-      <p class="text-gray-500 text-sm">Inicia sesión para continuar</p>
+<section
+  class="min-h-screen flex items-center justify-center bg-gradient-to-br from-secondary to-gray-900 px-4"
+>
+  <div
+    class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl p-6 md:p-12 animate-fade-in"
+  >
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+      <!-- Formulario de Login -->
+      <div>
+        <h2 class="text-3xl font-bold text-gray-800 text-center md:text-left">
+          ¡Bienvenido de nuevo! 👋
+        </h2>
+        <p class="text-gray-500 text-sm mb-6 text-center md:text-left">
+          Inicia sesión para continuar
+        </p>
+
+        <form class="space-y-4" (ngSubmit)="onLogin()" #loginForm="ngForm">
+          <div>
+            <label for="email" class="block text-gray-700 font-medium">
+              Correo electrónico
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              [(ngModel)]="email"
+              required
+              placeholder="admin@gmail.com"
+              class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition duration-300"
+            />
+          </div>
+
+          <div>
+            <label for="password" class="block text-gray-700 font-medium">
+              Contraseña
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              [(ngModel)]="password"
+              required
+              placeholder="••••••••"
+              class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition duration-300"
+            />
+          </div>
+
+          <!-- Selector de Rol -->
+          <div>
+            <label for="role" class="block text-gray-700 font-medium">
+              Tipo de usuario
+            </label>
+            <select
+              id="role"
+              name="role"
+              [(ngModel)]="role"
+              required
+              class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition duration-300"
+            >
+              <option value="" disabled selected>Selecciona un rol</option>
+              <option value="admin">Administrador</option>
+              <option value="asesor">Asesor</option>
+              <option value="empleado">Empleado</option>
+            </select>
+          </div>
+
+          <button
+            type="submit"
+            class="w-full bg-secondary text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold"
+          >
+            Iniciar Sesión
+          </button>
+
+          <div *ngIf="error" class="text-red-600 text-center mt-2">
+            {{ error }}
+          </div>
+        </form>
+
+        <p class="text-center text-gray-500 text-sm mt-4">
+          ¿No tienes cuenta?
+          <a
+            (click)="goToRegister()"
+            class="text-secondary font-medium hover:underline cursor-pointer"
+          >
+            Regístrate
+          </a>
+        </p>
+      </div>
+
+      <!-- Imagen (solo visible en pantallas grandes) -->
+      <div class="hidden md:block">
+        <img
+          src="assets/images/prueba3.png"
+          alt="Logo"
+          class="w-full h-auto max-h-[600px] object-contain mx-auto"
+        />
+      </div>
     </div>
-
-    <form class="space-y-4" (ngSubmit)="onLogin()" #loginForm="ngForm">
-      <div>
-        <label for="email" class="block text-gray-700 font-medium">Correo electrónico</label>
-        <input type="email" id="email" name="email" [(ngModel)]="email" required placeholder="admin@gmail.com"
-               class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition duration-300" />
-      </div>
-
-      <div>
-        <label for="password" class="block text-gray-700 font-medium">Contraseña</label>
-        <input type="password" id="password" name="password" [(ngModel)]="password" required placeholder="••••••••"
-               class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-secondary focus:border-transparent transition duration-300" />
-      </div>
-
-      <button type="submit"
-              class="w-full bg-secondary text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300 font-semibold">
-        Iniciar Sesión
-      </button>
-      <div *ngIf="error" class="text-red-600 text-center mt-2">{{ error }}</div>
-    </form>
   </div>
 </section>

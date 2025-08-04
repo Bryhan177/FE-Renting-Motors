@@ -9,4 +9,7 @@ import { Component } from '@angular/core';
 })
 export class RegisterComponent {
 
+  goToLogin() {
+    window.location.href = '/login';
+  }
 }

@@ -20,11 +20,19 @@
     </ul>
   </ng-container> -->
   <!-- SIEMPRE mostrar el botón en Home -->
-  <div class="flex gap-4 text-sm text-primary font-semibold" *ngIf="router.url === '/'">
-    <button class="hover:text-white cursor-pointer" (click)="goLogin()">
-      <img src="assets/images/user.png" alt="" class="w-16 h-16 inline-block mr-1 animate-pulse">
-    </button>
+  <div class="relative flex gap-4 text-sm text-primary font-semibold" *ngIf="router.url === '/'">
+  <button (click)="toggleMenu()" class="hover:text-white cursor-pointer">
+    <img src="assets/images/user.png" alt="" class="w-16 h-16 inline-block mr-1 animate-pulse">
+  </button>
+
+  <div *ngIf="menuAbierto" class="absolute top-full mt-2 right-0 bg-white border border-gray-300 rounded-lg shadow-lg w-40 z-50">
+    <ul class="text-left">
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="seleccionarOpcion('login')">Iniciar Sesión</li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer" (click)="seleccionarOpcion('register')">Registrar</li>
+    </ul>
   </div>
+</div>
+
   <!-- Mostrar el botón solo si no está autenticado y no está en Home -->
   <div class="flex gap-4 text-sm text-primary font-semibold" *ngIf="!showMenu() && router.url !== '/'">
     <button class="hover:text-white cursor-pointer" (click)="goHome()">Volver al inicio</button>

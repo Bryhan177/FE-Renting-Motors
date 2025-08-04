@@ -17,7 +17,7 @@ export class SidebarComponent {
 
   logout() {
     // Aquí podrías limpiar el estado de autenticación si lo implementas
-    this.router.navigate(['/login']);
+    this.router.navigate(['/']);
   }
   goDashboard() {
     this.router.navigate(['/dashboard']);

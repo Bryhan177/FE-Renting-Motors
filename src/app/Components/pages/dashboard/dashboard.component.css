@@ -1,6 +1,8 @@
 /* Dashboard Mejorado */
 .bg-white {
-  background: #fff;
+   background: radial-gradient(circle,
+    rgba(0, 0, 0, 0.9) 80%,
+    rgba(255, 255, 255, 0) 100%);
 }
 .shadow-lg {
   box-shadow: 0 4px 24px 0 rgba(0,0,0,0.07);

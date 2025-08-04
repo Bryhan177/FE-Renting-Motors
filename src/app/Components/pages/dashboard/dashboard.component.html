@@ -1,49 +1,58 @@
-<div class="mb-8">
-  <h1 class="text-3xl font-bold mb-2 flex items-center gap-2 text-primary">
+<div class="mb-8 px-4 md:px-8">
+  <h1 class="text-2xl sm:text-3xl font-bold mb-2 flex justify-center items-center gap-2 text-secondary text-center">
     <span>📊</span> Panel de Control
   </h1>
-  <p class="text-gray-500 text-lg">Resumen de la operación semanal y alertas importantes.</p>
+  <p class="text-secondary text-center text-base sm:text-lg">
+    Resumen de la operación semanal y alertas importantes.
+  </p>
 </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 px-4 md:px-8">
   <!-- Empleados -->
-  <div class="bg-white shadow-lg rounded-xl p-6 border-b-4 border-blue-500 flex flex-col items-center">
-    <span class="text-4xl mb-2">🧑‍🔧</span>
-    <h2 class="text-lg font-semibold text-gray-600">Empleados Activos</h2>
-    <p class="text-3xl font-bold text-primary">{{ empleados.length }}</p>
+  <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-blue-500 flex flex-col items-center text-center">
+    <span class="text-3xl sm:text-4xl mb-2">🧑‍🔧</span>
+    <h2 class="text-base sm:text-lg font-semibold text-white">Empleados Activos</h2>
+    <p class="text-2xl sm:text-3xl font-bold text-primary">{{ empleados.length }}</p>
   </div>
+
   <!-- Motos -->
-  <div class="bg-white shadow-lg rounded-xl p-6 border-b-4 border-green-500 flex flex-col items-center">
-    <span class="text-4xl mb-2">🛵</span>
-    <h2 class="text-lg font-semibold text-gray-600">Motos Operativas</h2>
-    <p class="text-3xl font-bold text-green-700">{{ motosOperativas }}</p>
+  <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-green-500 flex flex-col items-center text-center">
+    <span class="text-3xl sm:text-4xl mb-2">🛵</span>
+    <h2 class="text-base sm:text-lg font-semibold text-white">Motos Operativas</h2>
+    <p class="text-2xl sm:text-3xl font-bold text-green-700">{{ motosOperativas }}</p>
   </div>
+
   <!-- Total Recaudado -->
-  <div class="bg-white shadow-lg rounded-xl p-6 border-b-4 border-yellow-500 flex flex-col items-center">
-    <span class="text-4xl mb-2">💰</span>
-    <h2 class="text-lg font-semibold text-gray-600">Total Recaudado (Semana)</h2>
-    <p class="text-3xl font-bold text-yellow-600">$ {{ totalRecaudado | number }}</p>
+  <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-yellow-500 flex flex-col items-center text-center">
+    <span class="text-3xl sm:text-4xl mb-2">💰</span>
+    <h2 class="text-base sm:text-lg font-semibold text-white">Total Recaudado (Semana)</h2>
+    <p class="text-2xl sm:text-3xl font-bold text-yellow-600">$ {{ totalRecaudado | number }}</p>
   </div>
+
   <!-- Pendientes -->
-  <div class="bg-white shadow-lg rounded-xl p-6 border-b-4 border-red-500 flex flex-col items-center">
-    <span class="text-4xl mb-2">🚨</span>
-    <h2 class="text-lg font-semibold text-gray-600">Pagos Pendientes</h2>
-    <p class="text-3xl font-bold text-red-600">{{ empleadosPendientes.length }}</p>
+  <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-red-500 flex flex-col items-center text-center">
+    <span class="text-3xl sm:text-4xl mb-2">🚨</span>
+    <h2 class="text-base sm:text-lg font-semibold text-white">Pagos Pendientes</h2>
+    <p class="text-2xl sm:text-3xl font-bold text-red-600">{{ empleadosPendientes.length }}</p>
   </div>
 </div>
 
-<div class="bg-white rounded-xl shadow p-6 border-l-4 border-red-500">
-  <h2 class="text-xl font-bold text-red-600 mb-4 flex items-center gap-2"><span>🚨</span> Pagos Pendientes</h2>
+<div class="bg-white rounded-xl shadow p-4 sm:p-6 border-l-4 border-red-500 mx-4 md:mx-8">
+  <h2 class="text-lg sm:text-xl font-bold text-red-600 mb-4 flex items-center gap-2">
+    <span>🚨</span> Pagos Pendientes
+  </h2>
   <ng-container *ngIf="empleadosPendientes.length > 0; else noPendientes">
     <ul class="divide-y divide-gray-100">
-      <li *ngFor="let emp of empleadosPendientes" class="py-3 flex items-center gap-4">
-        <span class="text-lg font-semibold text-gray-700">{{ emp.nombre }}</span>
-        <span class="text-gray-500 text-sm">Cédula: {{ emp.cedula }}</span>
+      <li *ngFor="let emp of empleadosPendientes" class="py-3 flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-4">
+        <span class="text-base sm:text-lg font-bold text-red-600">{{ emp.nombre }}</span>
+        <span class="text-gray-700 text-sm">Cédula: {{ emp.cedula }}</span>
         <span class="ml-auto bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs">Pendiente</span>
       </li>
     </ul>
   </ng-container>
   <ng-template #noPendientes>
-    <div class="text-green-600 font-semibold">¡Todos los pagos están al día esta semana!</div>
+    <div class="text-green-600 font-semibold text-sm sm:text-base">
+      ¡Todos los pagos están al día esta semana!
+    </div>
   </ng-template>
 </div>

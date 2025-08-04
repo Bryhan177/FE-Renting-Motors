@@ -1,43 +1,61 @@
 <!-- home.component.html -->
 <!-- home.component.html -->
 <div class="relative h-screen bg-cover bg-center flex flex-col md:flex-row">
-  <div class="absolute inset-0 gradient"></div> <!-- Filtro oscuro -->
+  <div class="absolute inset-0 gradient"></div>
+  <!-- Filtro oscuro -->
 
   <!-- Contenedor del contenido -->
-  <div class="relative z-10 flex flex-col md:flex-row items-center justify-center h-full text-white px-6 md:px-12 gap-6 w-full">
-
+  <div
+    class="relative z-10 flex flex-col md:flex-row items-center justify-center h-full text-white px-6 md:px-12 gap-6 w-full"
+  >
     <!-- Imagen: primero en móviles, izquierda en grandes -->
     <div class="w-full md:w-1/2 flex justify-center mb-6 md:mb-0">
-      <img src="assets/images/prueba3.png" alt="Logo" class="w-3/4 md:w-full max-w-full md:max-w-full">
+      <img
+        src="assets/images/prueba3.png"
+        alt="Logo"
+        class="w-3/4 md:w-full max-w-full md:max-w-full"
+      />
     </div>
 
     <!-- Texto: debajo en móviles, derecha en grandes -->
     <div class="w-full md:w-1/2 text-center md:text-left">
-      <h1 class="text-3xl md:text-5xl font-bold mb-4">¡Renting de Motos al Mejor Precio!</h1>
-      <p class="text-lg md:text-xl mb-6">Disfruta de las mejores motos sin preocuparte por la compra. ¡Solo tienes que elegir la tuya!</p>
-      <a href="#planes" class="bg-secondary hover:bg-blue-700 text-black py-3 px-6 rounded-lg shadow-md text-lg font-semibold transition duration-300">
+      <h1 class="text-3xl md:text-5xl font-bold mb-4">
+        ¡Renting de Motos al Mejor Precio!
+      </h1>
+      <p class="text-lg md:text-xl mb-6">
+        Disfruta de las mejores motos sin preocuparte por la compra. ¡Solo
+        tienes que elegir la tuya!
+      </p>
+      <a
+        href="#planes"
+        class="bg-secondary hover:bg-blue-700 text-black py-3 px-6 rounded-lg shadow-md text-lg font-semibold transition duration-300"
+      >
         ¡Ver Planes de Renting!
       </a>
     </div>
-
   </div>
 </div>
-
 
 <section class="py-16 bg-white">
   <div class="container mx-auto px-6">
     <div class="grid md:grid-cols-2 gap-10">
       <!-- 🛵 Rentar Moto -->
-      <div class="text-center hover:bg-primary cursor-pointer">
-        <h2 class="text-4xl font-bold text-secondary mb-6">🛵 Rentar una Moto</h2>
-        <p class="text-lg text-gray-600 mb-4">
-          ¿Necesitas una moto para tus actividades diarias o trabajo? Tenemos lo que buscas.
+      <div class="text-center hover:bg-primary cursor-pointer card1">
+        <h2 class="text-4xl font-bold text-secondary mb-6">
+          🛵 Rentar una Moto
+        </h2>
+        <p class="text-lg text-white mb-4">
+          ¿Necesitas una moto para tus actividades diarias o trabajo? Tenemos lo
+          que buscas.
         </p>
-        <p class="text-md text-gray-600 mb-6">
-          Motos seguras, económicas y listas para rodar. Elige la que mejor se adapte a ti:
+        <p class="text-md text-white mb-6">
+          Motos seguras, económicas y listas para rodar. Elige la que mejor se
+          adapte a ti:
         </p>
 
-        <ul class="text-left max-w-md mx-auto mb-6 space-y-3 text-gray-700 list-disc list-inside">
+        <ul
+          class="text-left max-w-md mx-auto mb-6 space-y-3 text-white list-disc list-inside"
+        >
           <li>📍 Entrega rápida y cercana</li>
           <li>🛠️ Mantenimiento incluido</li>
           <li>🕒 Alquiler por días, semanas o meses</li>
@@ -45,22 +63,29 @@
           <li>✅ Documentación al día</li>
         </ul>
 
-        <button class="bg-secondary hover:bg-blue-700 text-white py-3 px-6 rounded-lg shadow-md text-lg transition duration-300">
+        <button
+          class="bg-secondary hover:bg-blue-700 text-white py-3 px-6 rounded-lg shadow-md text-lg transition duration-300"
+        >
           Ver Motos Disponibles
         </button>
       </div>
 
       <!-- 🚗 Únete como Conductor -->
-      <div class="text-center hover:bg-primary cursor-pointer">
-        <h2 class="text-4xl font-bold text-secondary mb-6">🚗 Únete como Conductor</h2>
-        <p class="text-lg text-gray-600 mb-4">
-          Gana dinero extra siendo parte de nuestro equipo. ¡Solo necesitas ganas y una moto!
+      <div class="text-center hover:bg-primary cursor-pointer card2">
+        <h2 class="text-4xl font-bold text-secondary mb-6">
+          🚗 Únete como Conductor
+        </h2>
+        <p class="text-lg text-white mb-4">
+          Gana dinero extra siendo parte de nuestro equipo. ¡Solo necesitas
+          ganas y una moto!
         </p>
-        <p class="text-md text-gray-600 mb-6">
+        <p class="text-md text-white mb-6">
           Si cumples con los requisitos, estás listo para comenzar:
         </p>
 
-        <ul class="text-left max-w-md mx-auto mb-6 space-y-3 text-gray-700 list-disc list-inside">
+        <ul
+          class="text-left max-w-md mx-auto mb-6 space-y-3 text-white list-disc list-inside"
+        >
           <li>📅 Disponibilidad de horario</li>
           <li>🪪 Licencia de conducir vigente</li>
           <li>🏍️ Experiencia de conducción</li>
@@ -68,7 +93,9 @@
           <li>🛡️ Enfoque en la seguridad</li>
         </ul>
 
-        <button class="bg-secondary hover:bg-blue-700 text-white py-3 px-6 rounded-lg shadow-md text-lg transition duration-300">
+        <button
+          class="bg-secondary hover:bg-blue-700 text-white py-3 px-6 rounded-lg shadow-md text-lg transition duration-300"
+        >
           ¡Aplica Ahora!
         </button>
       </div>
@@ -76,62 +103,54 @@
   </div>
 </section>
 
-
 <!-- Sección de planes -->
- <!-- AQUI ME GUSTARIA CAMBIAR LOS PALNES POR 3 CARD DE MOTOS CON EL NOMBRE Y EL PRECIO DE ALQUILER POR DIA Y SEMANA -->
- <section id="planes" class="py-16 bg-[#201E1C]">
+<!-- AQUI ME GUSTARIA CAMBIAR LOS PALNES POR 3 CARD DE MOTOS CON EL NOMBRE Y EL PRECIO DE ALQUILER POR DIA Y SEMANA -->
+<section id="planes" class="py-16 selection-bg-secondary">
   <div class="container mx-auto px-6 text-center">
-    <h2 class="text-4xl font-bold text-white mb-10">🏍️ Motos Disponibles para Renting</h2>
-
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
-
-      <!-- Card 1 -->
-      <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300">
-        <img src="https://www.fpmoto.com/media/catalog/product/s/i/sin-ti_tulo-1_0000s_0001_fp_fz3.0-04002.png?width=800&height=533&store=default&image-type=image" alt="Moto 1" class="w-full h-56 object-cover">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold text-gray-800 mb-2">Yamaha FZ 2.0</h3>
-          <p class="text-gray-600 mb-2">💲 <strong>$50/día</strong> | 💲 <strong>$300/semana</strong></p>
-          <button class="mt-4 bg-secondary hover:bg-blue-700 text-white py-2 px-5 rounded-lg transition duration-300">
-            ¡La Quiero!
-          </button>
-        </div>
-      </div>
-
-      <!-- Card 2 -->
-      <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300">
-        <img src="https://motos.honda.com.ec/uploads/galeria/CB125_1.png" alt="Moto 2" class="w-full h-56 object-cover">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold text-gray-800 mb-2">Honda CB 125</h3>
-          <p class="text-gray-600 mb-2">💲 <strong>$45/día</strong> | 💲 <strong>$280/semana</strong></p>
-          <button class="mt-4 bg-secondary hover:bg-blue-700 text-white py-2 px-5 rounded-lg transition duration-300">
-            ¡La Quiero!
-          </button>
-        </div>
-      </div>
-
-      <!-- Card 3 -->
-      <div class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300">
-        <img src="https://www.colcamer.com/wp-content/uploads/2017/12/right-45_13.png.webp" alt="Moto 3" class="w-full h-56 object-cover">
-        <div class="p-6">
-          <h3 class="text-2xl font-semibold text-gray-800 mb-2">AKT NKD 125</h3>
-          <p class="text-gray-600 mb-2">💲 <strong>$40/día</strong> | 💲 <strong>$250/semana</strong></p>
-          <button class="mt-4 bg-secondary hover:bg-blue-700 text-white py-2 px-5 rounded-lg transition duration-300">
-            ¡La Quiero!
-          </button>
+    <h2 class="text-4xl font-bold text-white mb-10">
+      🏍️ Motos Disponibles para Renting
+    </h2>
+    <div class="list_motos">
+      <div *ngFor="let producto of productos" class="card_moto">
+        <!-- Card 1 -->
+        <div
+          class="bg-white rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl transition duration-300"
+        >
+          <img
+            [src]="producto.img"
+            alt="Moto 1"
+            class="w-full h-56 object-cover"
+          />
+          <div class="p-6">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-2">
+              {{ producto.nombre }}
+            </h3>
+            <p class="text-gray-600 mb-2">
+              💲 <strong>${{ producto.precio_dia }}/día</strong> | 💲
+              <strong>${{ producto.precio_semana }}/semana</strong>
+            </p>
+            <button
+              class="mt-4 bg-secondary hover:bg-blue-700 text-white py-2 px-5 rounded-lg transition duration-300"
+            >
+              ¡La Quiero!
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-
 <footer class="bg-[#201E1C] text-white py-8 mt-12">
-  <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left">
-
+  <div
+    class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-6 text-center md:text-left"
+  >
     <!-- Logo y Descripción -->
     <div>
       <h3 class="text-xl font-bold mb-2">🏍️ MotoRent</h3>
-      <p class="text-gray-400">Tu solución ideal para alquilar motos de forma fácil, rápida y segura.</p>
+      <p class="text-gray-400">
+        Tu solución ideal para alquilar motos de forma fácil, rápida y segura.
+      </p>
     </div>
 
     <!-- Enlaces Rápidos -->
@@ -139,7 +158,9 @@
       <h4 class="text-lg font-semibold mb-2">Enlaces</h4>
       <ul class="space-y-1 text-gray-400">
         <li><a href="#planes" class="hover:text-white">Planes</a></li>
-        <li><a href="#conductor" class="hover:text-white">Conduce con Nosotros</a></li>
+        <li>
+          <a href="#conductor" class="hover:text-white">Conduce con Nosotros</a>
+        </li>
         <li><a href="#contacto" class="hover:text-white">Contacto</a></li>
       </ul>
     </div>
@@ -157,5 +178,3 @@
     &copy; 2025 MotoRent. Todos los derechos reservados.
   </div>
 </footer>
-
-

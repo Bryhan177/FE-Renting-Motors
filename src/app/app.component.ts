@@ -21,7 +21,7 @@ export class AppComponent {
 
   showSidebar(): boolean {
     const route = this.router.url;
-    return route !== '/' && route !== '/login';
+    return route !== '/' && route !== '/login' && route !== '/register';
   }
 }
 
