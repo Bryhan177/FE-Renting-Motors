@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './shared/header/header.component';
-import { SidebarComponent } from './shared/sidebar/sidebar.component';
+import { HeaderComponent } from './shared/layouts/header/header.component';
+import { SidebarComponent } from './shared/layouts/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent, SidebarComponent, CommonModule],
+  imports: [RouterOutlet, CommonModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -17,11 +17,7 @@ export class AppComponent {
   message: string = 'Futuro Emprendedor'
   title = 'control-motos';
 
-  constructor(private router: Router) {}
+  // constructor(private router: Router) {}
 
-  showSidebar(): boolean {
-    const route = this.router.url;
-    return route !== '/' && route !== '/login' && route !== '/register';
-  }
 }
 

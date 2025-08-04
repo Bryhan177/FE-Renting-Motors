@@ -15,6 +15,7 @@ export class SidebarComponent {
 
   constructor(private router: Router) {}
 
+
   logout() {
     // Aquí podrías limpiar el estado de autenticación si lo implementas
     this.router.navigate(['/']);

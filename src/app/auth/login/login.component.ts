@@ -36,7 +36,7 @@ export class LoginComponent {
       this.email === 'empleado@gmail.com' &&
       this.password === 'empleado123'
     ) {
-      this.router.navigate(['motos']);
+      this.router.navigate(['empleados']);
     } else if (this.role === 'asesor') {
       this.error = 'Acceso de asesor en proceso';
     } else {
@@ -45,5 +45,8 @@ export class LoginComponent {
   }
   goToRegister() {
     this.router.navigate(['register']);
+  }
+  goHome() {
+    this.router.navigate(['']);
   }
 }

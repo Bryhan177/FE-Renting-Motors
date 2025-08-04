@@ -1,0 +1,13 @@
+.fondo{
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.9) 80%, rgba(255, 255, 255, 0) 100%);
+}
+.goHome{
+  background-color: #0d47a1;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}

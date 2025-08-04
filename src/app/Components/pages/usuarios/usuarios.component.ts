@@ -8,10 +8,10 @@ import Swal from 'sweetalert2';
   selector: 'app-empleados',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: './empleados.component.html',
-  styleUrl: './empleados.component.css',
+  templateUrl: './usuarios.component.html',
+  styleUrl: './usuarios.component.css',
 })
-export class EmpleadosComponent {
+export class UsuariosComponent {
   mostrarModal: boolean = false;
   empleadoEditando: Empleado | null = null;
   modoEdicion = false;

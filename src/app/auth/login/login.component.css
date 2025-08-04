@@ -1,0 +1,14 @@
+.goHome{
+  @apply bg-white text-secondary font-bold py-2 px-4 rounded shadow hover:bg-gray-100;
+  transition: background-color 0.3s;
+  z-index: 10;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  outline: none;
+  margin-bottom: 20px;
+}
