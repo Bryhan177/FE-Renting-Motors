@@ -1,4 +1,8 @@
-<div class="flex h-screen">
+<button class="md:hidden top-0 right-0 text-gray-800 hover:text-gray-600 transition-colors bg-transparent border-none outline-none" (click)="toggleSidebar()">
+  <span class="text-2xl">☰</span>
+</button>
+<div class="flex h-screen flex-col md:flex-row">
+  <!-- SIDEBAR -->
   <aside
     [ngClass]="{
       'translate-x-0': showSidebar,
@@ -14,51 +18,49 @@
       />
       <span class="text-xl font-bold tracking-wide">Bryhan Stif</span>
     </div>
-    <span class="text-2xl cursor-pointer right-0 absolute p-4" (click)="toggleSidebar()">  ☰ </span>
+
+    <!-- Botón de cerrar solo en móvil -->
+    <span
+      class="text-2xl cursor-pointer absolute top-6 right-3 md:hidden"
+      (click)="toggleSidebar()"
+    >
+    ☰
+    </span>
+
+    <!-- NAVEGACIÓN -->
     <nav class="flex-1 py-8 px-4 space-y-2 cursor-pointer">
-      <a
-        (click)="goDashboard()"
-        routerLinkActive="bg-secondary text-white"
+      <a (click)="goDashboard()" routerLinkActive="bg-secondary text-white"
         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
       >
         <span>📊</span> <span>Dashboard</span>
       </a>
-      <a
-        (click)="goMotos()"
-        routerLinkActive="bg-secondary text-white"
+      <a (click)="goMotos()" routerLinkActive="bg-secondary text-white"
         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
       >
         <span>🛵</span> <span>Inventario Vehículos</span>
       </a>
-      <a
-        (click)="goEmpleados()"
-        routerLinkActive="bg-secondary text-white"
+      <a (click)="goUsuarios()" routerLinkActive="bg-secondary text-white"
         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
       >
         <span>🧑‍💼</span> <span>Usuarios</span>
       </a>
-      <a
-        (click)="goPagos()"
-        routerLinkActive="bg-secondary text-white"
+      <a (click)="goPagos()" routerLinkActive="bg-secondary text-white"
         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
       >
         <span>💰</span> <span>Pagos</span>
       </a>
-      <a
-        (click)="goHistorial()"
-        routerLinkActive="bg-secondary text-white"
+      <a (click)="goHistorial()" routerLinkActive="bg-secondary text-white"
         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
       >
         <span>📜</span> <span>Historial Vehículo</span>
       </a>
-      <a
-        (click)="goDocumentacion()"
-        routerLinkActive="bg-secondary text-white"
+      <a (click)="goDocumentacion()" routerLinkActive="bg-secondary text-white"
         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-secondary transition"
       >
         <span>📄</span> <span>Documentación</span>
       </a>
     </nav>
+
     <div class="p-4 border-t border-gray-700">
       <button
         class="w-full flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition"
@@ -68,10 +70,4 @@
       </button>
     </div>
   </aside>
-
-  <div class="flex-1 ml-0 md: bg-white overflow-auto">
-    <button class="md:hidden p-4 text-black" (click)="toggleSidebar()">
-      ☰
-    </button>
-  </div>
 </div>

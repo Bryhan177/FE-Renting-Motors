@@ -53,4 +53,72 @@ export class DashboardComponent {
       !emp.pagos?.some(p => p.semana === this.semanaActual && p.pagado)
     );
   }
+
+  // Métricas adicionales
+  getEmpleadosActivosPorcentaje(): number {
+    const totalEmpleados = this.empleados.length;
+    const empleadosActivos = this.empleados.filter(emp => emp.moto).length;
+    return totalEmpleados > 0 ? Math.round((empleadosActivos / totalEmpleados) * 100) : 0;
+  }
+
+  getMotosDisponiblesPorcentaje(): number {
+    const totalMotos = 10; // Simulado - en realidad vendría de un servicio
+    return totalMotos > 0 ? Math.round((this.motosOperativas / totalMotos) * 100) : 0;
+  }
+
+  getPendientesPorcentaje(): number {
+    const totalEmpleados = this.empleados.length;
+    return totalEmpleados > 0 ? Math.round((this.empleadosPendientes.length / totalEmpleados) * 100) : 0;
+  }
+
+  getEficienciaPorcentaje(): number {
+    const pagosCompletados = this.empleados.filter(emp =>
+      emp.pagos?.some(p => p.semana === this.semanaActual && p.pagado)
+    ).length;
+    const totalEmpleados = this.empleados.length;
+    return totalEmpleados > 0 ? Math.round((pagosCompletados / totalEmpleados) * 100) : 0;
+  }
+
+  getPromedioSemanal(): number {
+    const pagosSemana = this.empleados.flatMap(emp =>
+      emp.pagos?.filter(p => p.semana === this.semanaActual) || []
+    );
+    if (pagosSemana.length === 0) return 0;
+    const total = pagosSemana.reduce((sum, p) => sum + p.monto, 0);
+    return Math.round(total / pagosSemana.length);
+  }
+
+  getMinimoSemanal(): number {
+    const pagosSemana = this.empleados.flatMap(emp =>
+      emp.pagos?.filter(p => p.semana === this.semanaActual) || []
+    );
+    if (pagosSemana.length === 0) return 0;
+    return Math.min(...pagosSemana.map(p => p.monto));
+  }
+
+  getMaximoSemanal(): number {
+    const pagosSemana = this.empleados.flatMap(emp =>
+      emp.pagos?.filter(p => p.semana === this.semanaActual) || []
+    );
+    if (pagosSemana.length === 0) return 0;
+    return Math.max(...pagosSemana.map(p => p.monto));
+  }
+
+  getTotalAlertas(): number {
+    let alertas = 0;
+    if (this.getMotosVencimiento() > 0) alertas++;
+    if (this.empleadosPendientes.length > 0) alertas++;
+    if (this.getMotosMantenimiento() > 0) alertas++;
+    return alertas;
+  }
+
+  getMotosVencimiento(): number {
+    // Simulado - en realidad vendría de un servicio de motos
+    return Math.floor(Math.random() * 3); // 0-2 motos con documentos vencidos
+  }
+
+  getMotosMantenimiento(): number {
+    // Simulado - en realidad vendría de un servicio de motos
+    return Math.floor(Math.random() * 2); // 0-1 motos en mantenimiento
+  }
 }

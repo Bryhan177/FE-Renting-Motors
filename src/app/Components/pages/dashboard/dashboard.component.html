@@ -7,33 +7,80 @@
   </p>
 </div>
 
+<!-- Métricas Principales -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 px-4 md:px-8">
   <!-- Empleados -->
-  <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-blue-500 flex flex-col items-center text-center">
+  <div class="bg-gradient-to-br from-blue-500 to-blue-600 shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-blue-700 flex flex-col items-center text-center text-white transform hover:scale-105 transition-transform duration-200">
     <span class="text-3xl sm:text-4xl mb-2">🧑‍🔧</span>
-    <h2 class="text-base sm:text-lg font-semibold text-white">Empleados Activos</h2>
-    <p class="text-2xl sm:text-3xl font-bold text-primary">{{ empleados.length }}</p>
+    <h2 class="text-base sm:text-lg font-semibold">Empleados Activos</h2>
+    <p class="text-2xl sm:text-3xl font-bold">{{ empleados.length }}</p>
+    <div class="mt-2 text-xs opacity-90">{{ getEmpleadosActivosPorcentaje() }}% del total</div>
   </div>
 
   <!-- Motos -->
-  <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-green-500 flex flex-col items-center text-center">
+  <div class="bg-gradient-to-br from-green-500 to-green-600 shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-green-700 flex flex-col items-center text-center text-white transform hover:scale-105 transition-transform duration-200">
     <span class="text-3xl sm:text-4xl mb-2">🛵</span>
-    <h2 class="text-base sm:text-lg font-semibold text-white">Motos Operativas</h2>
-    <p class="text-2xl sm:text-3xl font-bold text-green-700">{{ motosOperativas }}</p>
+    <h2 class="text-base sm:text-lg font-semibold">Motos Operativas</h2>
+    <p class="text-2xl sm:text-3xl font-bold">{{ motosOperativas }}</p>
+    <div class="mt-2 text-xs opacity-90">{{ getMotosDisponiblesPorcentaje() }}% disponibles</div>
   </div>
 
   <!-- Total Recaudado -->
-  <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-yellow-500 flex flex-col items-center text-center">
+  <div class="bg-gradient-to-br from-yellow-500 to-yellow-600 shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-yellow-700 flex flex-col items-center text-center text-white transform hover:scale-105 transition-transform duration-200">
     <span class="text-3xl sm:text-4xl mb-2">💰</span>
-    <h2 class="text-base sm:text-lg font-semibold text-white">Total Recaudado (Semana)</h2>
-    <p class="text-2xl sm:text-3xl font-bold text-yellow-600">$ {{ totalRecaudado | number }}</p>
+    <h2 class="text-base sm:text-lg font-semibold">Total Recaudado</h2>
+    <p class="text-2xl sm:text-3xl font-bold">$ {{ totalRecaudado | number }}</p>
+    <div class="mt-2 text-xs opacity-90">Esta semana</div>
   </div>
 
   <!-- Pendientes -->
-  <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-red-500 flex flex-col items-center text-center">
+  <div class="bg-gradient-to-br from-red-500 to-red-600 shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-red-700 flex flex-col items-center text-center text-white transform hover:scale-105 transition-transform duration-200">
     <span class="text-3xl sm:text-4xl mb-2">🚨</span>
-    <h2 class="text-base sm:text-lg font-semibold text-white">Pagos Pendientes</h2>
-    <p class="text-2xl sm:text-3xl font-bold text-red-600">{{ empleadosPendientes.length }}</p>
+    <h2 class="text-base sm:text-lg font-semibold">Pagos Pendientes</h2>
+    <p class="text-2xl sm:text-3xl font-bold">{{ empleadosPendientes.length }}</p>
+    <div class="mt-2 text-xs opacity-90">{{ getPendientesPorcentaje() }}% pendientes</div>
+  </div>
+</div>
+
+<!-- Métricas Secundarias -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6 mb-8 px-4 md:px-8">
+  <!-- Eficiencia -->
+  <div class="bg-gradient-to-br from-purple-500 to-purple-600 shadow-lg rounded-xl p-4 sm:p-6 text-white">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold">📈 Eficiencia</h3>
+      <span class="text-2xl">{{ getEficienciaPorcentaje() }}%</span>
+    </div>
+    <div class="w-full bg-purple-700 rounded-full h-3">
+      <div class="bg-white h-3 rounded-full transition-all duration-500" [style.width.%]="getEficienciaPorcentaje()"></div>
+    </div>
+    <p class="text-xs mt-2 opacity-90">Basado en pagos y motos operativas</p>
+  </div>
+
+  <!-- Promedio Semanal -->
+  <div class="bg-gradient-to-br from-indigo-500 to-indigo-600 shadow-lg rounded-xl p-4 sm:p-6 text-white">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold">📊 Promedio Semanal</h3>
+      <span class="text-2xl">${{ getPromedioSemanal() | number }}</span>
+    </div>
+    <div class="text-xs opacity-90">
+      <div class="flex justify-between">
+        <span>Mín: ${{ getMinimoSemanal() | number }}</span>
+        <span>Máx: ${{ getMaximoSemanal() | number }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alertas -->
+  <div class="bg-gradient-to-br from-orange-500 to-orange-600 shadow-lg rounded-xl p-4 sm:p-6 text-white">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-lg font-semibold">⚠️ Alertas</h3>
+      <span class="text-2xl">{{ getTotalAlertas() }}</span>
+    </div>
+    <div class="text-xs opacity-90">
+      <div *ngIf="getMotosVencimiento() > 0" class="mb-1">• {{ getMotosVencimiento() }} motos con documentos vencidos</div>
+      <div *ngIf="empleadosPendientes.length > 0" class="mb-1">• {{ empleadosPendientes.length }} pagos pendientes</div>
+      <div *ngIf="getMotosMantenimiento() > 0">• {{ getMotosMantenimiento() }} motos en mantenimiento</div>
+    </div>
   </div>
 </div>
 

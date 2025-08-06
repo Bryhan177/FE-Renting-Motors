@@ -26,8 +26,8 @@ export class SidebarComponent {
   goMotos() {
     this.router.navigate(['/motos']);
   }
-  goEmpleados() {
-    this.router.navigate(['/empleados']);
+  goUsuarios() {
+    this.router.navigate(['/usuarios']);
   }
   goPagos() {
     this.router.navigate(['/pagos']);

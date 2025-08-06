@@ -1,96 +1,104 @@
-<div class="overflow-x-auto mt-6 px-4 sm:px-6">
-  <h2 class="font-bold mb-4 text-center text-secondary text-2xl sm:text-4xl">Registrar nueva moto 🛵</h2>
+<div class="overflow-x-auto mt-6 px-4 sm:px-6 lg:px-8">
+  <h2 class="font-bold mb-4 text-center text-secondary text-xl sm:text-2xl lg:text-4xl">
+    Registrar nueva moto 🛵
+  </h2>
 
-  <div class="bg-secondary p-4 rounded shadow mb-6">
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-      <input type="text" placeholder="Placa"
-        [(ngModel)]="nuevaMoto.placa"
-        class="border p-2 rounded w-full"
-        [class.border-red-500]="formularioInvalido && !nuevaMoto.placa"
+  <!-- Formulario -->
+  <div class="bg-secondary p-3 sm:p-4 rounded shadow mb-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+      <input
+        type="text"
+        placeholder="Marca"
+        [(ngModel)]="nuevaMoto.marca"
+        class="border p-2 rounded w-full text-sm sm:text-base"
+        [class.border-red-500]="formularioInvalido && !nuevaMoto.marca"
       />
 
-      <input type="text" placeholder="Modelo"
+      <input
+        type="text"
+        placeholder="Modelo"
         [(ngModel)]="nuevaMoto.modelo"
-        class="border p-2 rounded w-full"
+        class="border p-2 rounded w-full text-sm sm:text-base"
         [class.border-red-500]="formularioInvalido && !nuevaMoto.modelo"
       />
 
-      <input type="number" placeholder="Año"
-        [(ngModel)]="nuevaMoto.anio"
-        class="border p-2 rounded w-full" />
+      <input
+        type="text"
+        placeholder="Placa"
+        [(ngModel)]="nuevaMoto.placa"
+        class="border p-2 rounded w-full text-sm sm:text-base"
+        [class.border-red-500]="formularioInvalido && !nuevaMoto.placa"
+      />
 
-      <input type="date" placeholder="SOAT"
-        [(ngModel)]="nuevaMoto.soat"
-        class="border p-2 rounded w-full" />
-
-      <input type="date" placeholder="Tecnomecánica"
-        [(ngModel)]="nuevaMoto.tecnomecanica"
-        class="border p-2 rounded w-full" />
-
-      <select [(ngModel)]="nuevaMoto.estado"
-        class="border p-2 rounded w-full">
-        <option value="Activa">Activa</option>
-        <option value="En mantenimiento">En mantenimiento</option>
-        <option value="Inactiva">Inactiva</option>
+      <select [(ngModel)]="nuevaMoto.estado" class="border p-2 rounded w-full text-sm sm:text-base">
+        <option value="">Seleccionar estado</option>
+        <option value="Disponible">Disponible</option>
+        <option value="En uso">En uso</option>
+        <option value="Mantenimiento">Mantenimiento</option>
+        <option value="Fuera de servicio">Fuera de servicio</option>
       </select>
     </div>
 
-    <div *ngIf="formularioInvalido" class="text-red-600 font-semibold mt-2">
-      ⚠️ Por favor completa al menos la placa y el modelo.
+    <div *ngIf="formularioInvalido" class="text-red-600 font-semibold mt-2 text-sm sm:text-base">
+      ⚠️ Por favor completa todos los campos requeridos.
     </div>
 
-    <button (click)="agregarMoto()" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto">
+    <button
+      (click)="agregarMoto()"
+      class="mt-4 bg-green-500 hover:bg-green-600 text-white px-3 sm:px-4 py-2 rounded w-full sm:w-auto text-sm sm:text-base"
+    >
       Agregar moto ✅
     </button>
   </div>
 
   <!-- Tabla -->
-  <div class="overflow-auto rounded-lg shadow mb-6">
-    <table class="min-w-full bg-secondary border border-gray-200">
+  <div class="overflow-x-auto rounded-lg shadow mb-6">
+    <table class="min-w-full bg-secondary border border-gray-200 text-xs sm:text-sm lg:text-base">
       <thead class="bg-secondary text-white">
         <tr>
-          <th class="px-4 py-2 text-left whitespace-nowrap">Placa</th>
-          <th class="px-4 py-2 text-left whitespace-nowrap">Modelo</th>
-          <th class="px-4 py-2 text-left whitespace-nowrap">Año</th>
-          <th class="px-4 py-2 text-left whitespace-nowrap">SOAT</th>
-          <th class="px-4 py-2 text-left whitespace-nowrap">Tecnomecánica</th>
-          <th class="px-4 py-2 text-left whitespace-nowrap">Estado</th>
-          <th class="px-4 py-2 text-left whitespace-nowrap">Acciones</th>
+          <th class="px-2 sm:px-4 py-2 text-left whitespace-nowrap">Marca</th>
+          <th class="px-2 sm:px-4 py-2 text-left whitespace-nowrap">Modelo</th>
+          <th class="px-2 sm:px-4 py-2 text-left whitespace-nowrap">Placa</th>
+          <th class="px-2 sm:px-4 py-2 text-left whitespace-nowrap">Estado</th>
+          <th class="px-2 sm:px-4 py-2 text-left whitespace-nowrap">Acciones</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let moto of motos" class="border-t bg-white">
-          <td class="px-4 py-2">{{ moto.placa }}</td>
-          <td class="px-4 py-2">{{ moto.modelo }}</td>
-          <td class="px-4 py-2">{{ moto.anio }}</td>
-          <td class="px-4 py-2">
-            <span [ngClass]="{'bg-red-100 text-red-700 px-2 rounded': soatProximoAVencer(moto.soat)}">
-              {{ moto.soat }}
-              <span *ngIf="soatProximoAVencer(moto.soat)" class="ml-1 animate-pulse">⚠️</span>
+          <td class="px-2 sm:px-4 py-2 font-medium">{{ moto.marca }}</td>
+          <td class="px-2 sm:px-4 py-2">{{ moto.modelo }}</td>
+          <td class="px-2 sm:px-4 py-2">{{ moto.placa }}</td>
+          <td class="px-2 sm:px-4 py-2">
+            <span
+              [ngClass]="{
+                'text-green-600 font-bold': moto.estado === 'Disponible',
+                'text-blue-600 font-bold': moto.estado === 'En uso',
+                'text-yellow-500 font-bold': moto.estado === 'Mantenimiento',
+                'text-red-500 font-bold': moto.estado === 'Fuera de servicio'
+              }"
+            >
+              <span *ngIf="moto.estado === 'Disponible'">🟢</span>
+              <span *ngIf="moto.estado === 'En uso'">🔵</span>
+              <span *ngIf="moto.estado === 'Mantenimiento'">🟡</span>
+              <span *ngIf="moto.estado === 'Fuera de servicio'">🔴</span>
+              <span class="hidden sm:inline">{{ moto.estado }}</span>
             </span>
           </td>
-          <td class="px-4 py-2">
-            <span [ngClass]="{'bg-red-100 text-red-700 px-2 rounded': tecnomecanicaProximaAVencer(moto.tecnomecanica)}">
-              {{ moto.tecnomecanica }}
-              <span *ngIf="tecnomecanicaProximaAVencer(moto.tecnomecanica)" class="ml-1 animate-pulse">⚠️</span>
-            </span>
-          </td>
-          <td class="px-4 py-2">
-            <span [ngClass]="{
-              'text-green-600 font-bold': moto.estado === 'Activa',
-              'text-yellow-500 font-bold': moto.estado === 'En mantenimiento',
-              'text-gray-500 font-bold': moto.estado === 'Inactiva'
-            }">
-              <span *ngIf="moto.estado === 'Activa'">🟢</span>
-              <span *ngIf="moto.estado === 'En mantenimiento'">🟡</span>
-              <span *ngIf="moto.estado === 'Inactiva'">⚪</span>
-              {{ moto.estado }}
-            </span>
-          </td>
-          <td class="px-4 py-2">
-            <button (click)="abrirModal(moto)" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded flex items-center gap-1">
-              <span>✏️</span> Editar
-            </button>
+          <td class="px-2 sm:px-4 py-2">
+            <div class="flex gap-1">
+              <button
+                (click)="abrirModal(moto)"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-2 sm:px-3 py-1 rounded flex items-center gap-1 text-xs sm:text-sm"
+              >
+                <span>✏️</span> <span class="hidden sm:inline">Editar</span>
+              </button>
+              <button
+                (click)="eliminarMoto(moto._id!)"
+                class="bg-red-500 hover:bg-red-600 text-white px-2 sm:px-3 py-1 rounded flex items-center gap-1 text-xs sm:text-sm"
+              >
+                <span>🗑️</span> <span class="hidden sm:inline">Eliminar</span>
+              </button>
+            </div>
           </td>
         </tr>
       </tbody>
@@ -99,40 +107,49 @@
 </div>
 
 <!-- Modal Responsive -->
-<div *ngIf="modalVisible" class="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 px-4">
-  <div class="bg-white p-6 rounded-lg shadow-lg w-11/12 sm:w-2/3 md:w-1/2 max-h-[90vh] overflow-y-auto">
+<div *ngIf="modalVisible" class="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 px-4 z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full sm:w-2/3 md:w-1/2 max-w-lg max-h-[90vh] overflow-y-auto">
     <h2 class="text-xl font-bold mb-4">Editar Moto</h2>
     <form (ngSubmit)="editarMoto()">
-      <div class="mb-4">
-        <label for="placa" class="block">Placa</label>
-        <input id="placa" type="text" [(ngModel)]="motoEditada.placa" name="placa" class="border p-2 w-full" required>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label for="marca" class="block">Marca</label>
+          <input id="marca" type="text" [(ngModel)]="motoEditada.marca" name="marca" class="border p-2 w-full" required />
+        </div>
+        <div>
+          <label for="modelo" class="block">Modelo</label>
+          <input id="modelo" type="text" [(ngModel)]="motoEditada.modelo" name="modelo" class="border p-2 w-full" required />
+        </div>
+        <div>
+          <label for="placa" class="block">Placa</label>
+          <input id="placa" type="text" [(ngModel)]="motoEditada.placa" name="placa" class="border p-2 w-full" required />
+        </div>
+        <div>
+          <label for="estado" class="block">Estado</label>
+          <select id="estado" [(ngModel)]="motoEditada.estado" name="estado" class="border p-2 w-full" required>
+            <option value="">Seleccionar estado</option>
+            <option value="Disponible">Disponible</option>
+            <option value="En uso">En uso</option>
+            <option value="Mantenimiento">Mantenimiento</option>
+            <option value="Fuera de servicio">Fuera de servicio</option>
+          </select>
+        </div>
       </div>
-      <div class="mb-4">
-        <label for="modelo" class="block">Modelo</label>
-        <input id="modelo" type="text" [(ngModel)]="motoEditada.modelo" name="modelo" class="border p-2 w-full" required>
-      </div>
-      <div class="mb-4">
-        <label for="anio" class="block">Año</label>
-        <input id="anio" type="number" [(ngModel)]="motoEditada.anio" name="anio" class="border p-2 w-full" required>
-      </div>
-      <div class="mb-4">
-        <label for="soat" class="block">SOAT</label>
-        <input id="soat" type="date" [(ngModel)]="motoEditada.soat" name="soat" class="border p-2 w-full" required>
-      </div>
-      <div class="mb-4">
-        <label for="tecno" class="block">Tecnomecánica</label>
-        <input id="tecno" type="date" [(ngModel)]="motoEditada.tecno" name="tecno" class="border p-2 w-full" required>
-      </div>
-      <div class="mb-4">
-        <label for="estado" class="block">Estado</label>
-        <select id="estado" [(ngModel)]="motoEditada.estado" name="estado" class="border p-2 w-full" required>
-          <option value="Activo">Activo</option>
-          <option value="Inactivo">Inactivo</option>
-        </select>
-      </div>
-      <div class="flex flex-col sm:flex-row justify-end gap-2">
-        <button type="button" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded" (click)="cerrarModal()">Cancelar</button>
-        <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded">Guardar</button>
+
+      <div class="flex flex-col sm:flex-row justify-end gap-2 mt-4">
+        <button
+          type="button"
+          class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+          (click)="cerrarModal()"
+        >
+          Cancelar
+        </button>
+        <button
+          type="submit"
+          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+        >
+          Guardar
+        </button>
       </div>
     </form>
   </div>
