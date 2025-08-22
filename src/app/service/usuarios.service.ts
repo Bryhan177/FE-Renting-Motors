@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Usuario } from '../shared/interfaces/usuario';
+import { Usuario, CreateUsuarioPayload } from '../shared/interfaces/usuario';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,7 @@ getUsuario(id: string): Observable<Usuario> {
 }
 
 // Crear un nuevo usuario
-createUsuario(usuario: Omit<Usuario, '_id' | 'createdAt' | 'updatedAt'>): Observable<Usuario> {
+createUsuario(usuario: CreateUsuarioPayload): Observable<Usuario> {
   return this.http.post<Usuario>(this.apiUrl, usuario);
 }
 

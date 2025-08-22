@@ -10,3 +10,8 @@ export interface Usuario {
   createdAt?: Date;
   updatedAt?: boolean;
 }
+
+// Payload para creación de usuario (permite contraseña opcional)
+export type CreateUsuarioPayload = Omit<Usuario, '_id' | 'createdAt' | 'updatedAt'> & {
+  password?: string;
+};
