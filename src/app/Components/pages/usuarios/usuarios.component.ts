@@ -1,83 +1,86 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Empleado } from '../../../shared/interfaces/empleados';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { Usuario } from '../../../shared/interfaces/usuario';
+import { UsuariosService } from '../../../service/usuarios.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
-  selector: 'app-empleados',
+  selector: 'app-usuarios',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, HttpClientModule],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css',
 })
-export class UsuariosComponent {
+export class UsuariosComponent implements OnInit{
   mostrarModal: boolean = false;
   empleadoEditando: Empleado | null = null;
   modoEdicion = false;
   empleadoSeleccionado: Empleado | null = null;
+  usuarioEditando: Usuario | null = null;
   mostrarPagos = false;
+  usuarios: Usuario[] = []
 
-  empleados: Empleado[] = [
-    {
-      nombre: 'Jhon Perez',
-      cedula: '123456789',
-      telefono: '3001234567',
-      moto: 'ABC123',
-      descanso: 'Miércoles',
-    },
-    {
-      nombre: 'Carlos Manuel',
-      cedula: '123456789',
-      telefono: '3001234567',
-      moto: 'ABC123',
-      descanso: 'Viernes',
-    },
-    {
-      nombre: 'Fredy Arroyabe',
-      cedula: '123456789',
-      telefono: '3001234567',
-      moto: 'ABC123',
-      descanso: 'Lunes',
-    },
-    {
-      nombre: 'Rafael Rojas',
-      cedula: '123456789',
-      telefono: '3001234567',
-      moto: 'ABC123',
-      descanso: 'Miércoles',
-    },
-  ];
-
-  nuevoEmpleado: Empleado = {
+  nuevoUsuario: Usuario = {
     nombre: '',
-    cedula: '',
+    apellido: '',
+    email: '',
+    cedula: 0,
     telefono: '',
-    moto: '',
-    descanso: '',
+    rol: 'cliente',
+    activo: true
   };
+  constructor(private usuariosService: UsuariosService){}
 
-  editarEmpleado(empleado: Empleado) {
+  ngOnInit() {
+    this.cargarUsuarios();
+  }
+  cargarUsuarios(){
+    this.usuariosService.getUsuarios().subscribe({
+      next: (usuarios) => {
+        this.usuarios = usuarios;
+      },
+      error: (error) => {
+        console.error('Error al cargar usuarios:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudieron cargar los usuarios',
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+        });
+      }
+    });
+  }
+
+  editarUsuario(usuario: Usuario) {
     this.modoEdicion = true;
-    this.empleadoEditando = { ...empleado };
-    this.nuevoEmpleado = { ...empleado };
+    this.usuarioEditando = { ...usuario };
+    this.nuevoUsuario = { ...usuario };
     this.mostrarModal = true;
   }
+
   abrirModal() {
     this.mostrarModal = true;
-    this.nuevoEmpleado = {
+    this.nuevoUsuario = {
       nombre: '',
-      cedula: '',
+      apellido: '',
+      email: '',
+      cedula: 0,
       telefono: '',
-      moto: '',
-      descanso: '',
+      rol: 'cliente',
+      activo: true
     };
     this.modoEdicion = false;
-    this.empleadoEditando = null;
+    this.usuarioEditando = null;
   }
 
-  agregarEmpleado() {
-    if (!this.nuevoEmpleado.nombre || !this.nuevoEmpleado.cedula || !this.nuevoEmpleado.telefono || !this.nuevoEmpleado.descanso) {
+  agregarUsuario() {
+    if (!this.nuevoUsuario.nombre || !this.nuevoUsuario.apellido || !this.nuevoUsuario.email || !this.nuevoUsuario.telefono) {
       Swal.fire({
         icon: 'error',
         title: 'Campos requeridos incompletos',
@@ -92,96 +95,127 @@ export class UsuariosComponent {
       return;
     }
 
-    if (this.modoEdicion && this.empleadoEditando) {
-      const index = this.empleados.findIndex((e: Empleado) => e.cedula === this.empleadoEditando!.cedula);
-      if (index !== -1) {
-        this.empleados[index] = { ...this.nuevoEmpleado };
-      }
-      Swal.fire({
-        icon: 'success',
-        title: 'Empleado actualizado',
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 1300,
-        background: '#22C55E',
-        color: 'white',
+    if (this.modoEdicion && this.usuarioEditando) {
+      // Actualizar usuario
+      this.usuariosService.updateUsuario(this.usuarioEditando._id!, this.nuevoUsuario).subscribe({
+        next: (usuario) => {
+          const index = this.usuarios.findIndex(u => u._id === usuario._id);
+          if (index !== -1) {
+            this.usuarios[index] = usuario;
+          }
+          Swal.fire({
+            icon: 'success',
+            title: 'Usuario actualizado',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1300,
+            background: '#22C55E',
+            color: 'white',
+          });
+          this.cerrarModal();
+        },
+        error: (error) => {
+          console.error('Error al actualizar usuario:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo actualizar el usuario',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        }
       });
     } else {
-      this.empleados.push({ ...this.nuevoEmpleado });
-      Swal.fire({
-        icon: 'success',
-        title: 'Empleado agregado',
-        toast: true,
-        position: 'top-end',
-        showConfirmButton: false,
-        timer: 1300,
-        background: '#22C55E',
-        color: 'white',
+      // Crear nuevo usuario
+      this.usuariosService.createUsuario(this.nuevoUsuario).subscribe({
+        next: (usuario) => {
+          this.usuarios.push(usuario);
+          Swal.fire({
+            icon: 'success',
+            title: 'Usuario agregado',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 1300,
+            background: '#22C55E',
+            color: 'white',
+          });
+          this.cerrarModal();
+        },
+        error: (error) => {
+          console.error('Error al crear usuario:', error);
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'No se pudo crear el usuario',
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        }
       });
     }
-    this.mostrarModal = false;
-    this.cerrarModal();
+  }
+
+  eliminarUsuario(id: string) {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "Esta acción no se puede deshacer",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.usuariosService.deleteUsuario(id).subscribe({
+          next: () => {
+            this.usuarios = this.usuarios.filter(u => u._id !== id);
+            Swal.fire({
+              icon: 'success',
+              title: 'Usuario eliminado',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 1300,
+              background: '#22C55E',
+              color: 'white',
+            });
+          },
+          error: (error) => {
+            console.error('Error al eliminar usuario:', error);
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'No se pudo eliminar el usuario',
+              toast: true,
+              position: 'top-end',
+              showConfirmButton: false,
+              timer: 3000,
+            });
+          }
+        });
+      }
+    });
   }
 
   cerrarModal() {
     this.mostrarModal = false;
-    this.nuevoEmpleado = {
+    this.nuevoUsuario = {
       nombre: '',
-      cedula: '',
+      apellido: '',
+      email: '',
+      cedula: 0,
       telefono: '',
-      moto: '',
-      descanso: '',
+      rol: 'cliente',
+      activo: true
     };
     this.modoEdicion = false;
-    this.empleadoEditando = null;
+    this.usuarioEditando = null;
   }
-
-  abrirPagos(empleado: Empleado) {
-    this.empleadoSeleccionado = empleado;
-    this.mostrarPagos = true;
-    if (!empleado.pagos) {
-      empleado.pagos = [];
-    }
-  }
-
-  registrarPago() {
-    const semanaActual = this.obtenerSemanaActual();
-    const yaRegistrado = this.empleadoSeleccionado?.pagos?.some((p: { semana: string }) => p.semana === semanaActual);
-    if (!yaRegistrado && this.empleadoSeleccionado) {
-      this.empleadoSeleccionado.pagos!.push({
-        semana: semanaActual,
-        monto: 220000,
-        pagado: true,
-      });
-    }
-  }
-
-  cerrarPagos() {
-    this.empleadoSeleccionado = null;
-    this.mostrarPagos = false;
-  }
-
-  obtenerSemanaActual(): string {
-    const now = new Date();
-    const primera = new Date(now.getFullYear(), 0, 1);
-    const dias = Math.floor((now.getTime() - primera.getTime()) / (24 * 60 * 60 * 1000));
-    const semana = Math.ceil((dias + primera.getDay() + 1) / 7);
-    return `${now.getFullYear()} - Semana:${semana.toString().padStart(2, '0')}`;
-  }
-
-  getResumenSemanal() {
-    const semanaActual = this.obtenerSemanaActual();
-    return this.empleados.map((empleado: Empleado) => {
-      const pago = empleado.pagos?.find((p: { semana: string }) => p.semana === semanaActual);
-      return {
-        nombre: empleado.nombre,
-        cedula: empleado.cedula,
-        descanso: empleado.descanso,
-        pagado: pago?.pagado ?? false,
-        monto: pago?.monto ?? 0,
-      };
-    });
-  }
-
 }

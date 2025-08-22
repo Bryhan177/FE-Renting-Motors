@@ -3,7 +3,7 @@
 
   <div class="flex justify-center sm:justify-end mb-4">
     <button (click)="abrirModal()" class="bg-green-600 hover:bg-green-700 text-white px-3 sm:px-4 py-2 rounded flex items-center gap-1 text-sm sm:text-base">
-      <span>➕</span> <span>Agregar Empleado</span>
+      <span>➕</span> <span>Agregar Usuario</span>
     </button>
   </div>
 
@@ -20,23 +20,38 @@
         </tr>
       </thead>
       <tbody>
-        <!-- 🔁 Aquí irán los empleados (más adelante lo haremos dinámico) -->
-        <tr class="border-t" *ngFor="let empleado of empleados" [ngClass]="{'bg-red-50': !empleado.moto}">
-          <td class="px-2 sm:px-4 py-2 font-medium">{{ empleado.nombre }}</td>
-          <td class="px-2 sm:px-4 py-2 hidden sm:table-cell">{{ empleado.cedula }}</td>
-          <td class="px-2 sm:px-4 py-2 hidden md:table-cell">{{ empleado.telefono }}</td>
+        <tr class="border-t" *ngFor="let usuario of usuarios" [ngClass]="{'bg-red-50': !usuario.activo}">
+          <td class="px-2 sm:px-4 py-2 font-medium">{{ usuario.nombre }}</td>
+          <td class="px-2 sm:px-4 py-2 hidden sm:table-cell">{{ usuario.apellido }}</td>
+          <td class="px-2 sm:px-4 py-2 hidden md:table-cell">{{ usuario.email }}</td>
+          <td class="px-2 sm:px-4 py-2 hidden lg:table-cell">{{ usuario.cedula }}</td>
+          <td class="px-2 sm:px-4 py-2 hidden md:table-cell">{{ usuario.telefono }}</td>
           <td class="px-2 sm:px-4 py-2">
-            <span *ngIf="empleado.moto; else sinMoto">{{ empleado.moto }}</span>
-            <ng-template #sinMoto><span class="text-red-500 font-semibold text-xs">Sin moto</span></ng-template>
+            <span class="px-2 py-1 rounded text-xs font-medium"
+                  [ngClass]="{
+                    'bg-blue-100 text-blue-800': usuario.rol === 'admin',
+                    'bg-green-100 text-green-800': usuario.rol === 'empleado',
+                    'bg-gray-100 text-gray-800': usuario.rol === 'cliente'
+                  }">
+              {{ usuario.rol }}
+            </span>
           </td>
-          <td class="px-2 sm:px-4 py-2 hidden lg:table-cell">{{ empleado.descanso }}</td>
+          <td class="px-2 sm:px-4 py-2">
+            <span class="px-2 py-1 rounded text-xs font-medium"
+                  [ngClass]="{
+                    'bg-green-100 text-green-800': usuario.activo,
+                    'bg-red-100 text-red-800': !usuario.activo
+                  }">
+              {{ usuario.activo ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
           <td class="px-2 sm:px-4 py-2">
             <div class="flex flex-col sm:flex-row gap-1 sm:gap-2">
-              <button (click)="abrirPagos(empleado)" class="bg-blue-500 hover:bg-blue-600 text-white px-2 sm:px-3 py-1 rounded flex items-center justify-center gap-1 text-xs">
-                <span>💰</span><span class="hidden sm:inline">Pagos</span>
-              </button>
-              <button (click)="editarEmpleado(empleado)" class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 sm:px-3 py-1 rounded flex items-center justify-center gap-1 text-xs">
+              <button (click)="editarUsuario(usuario)" class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 sm:px-3 py-1 rounded flex items-center justify-center gap-1 text-xs">
                 <span>✏️</span><span class="hidden sm:inline">Editar</span>
+              </button>
+              <button (click)="eliminarUsuario(usuario._id!)" class="bg-red-500 hover:bg-red-600 text-white px-2 sm:px-3 py-1 rounded flex items-center justify-center gap-1 text-xs">
+                <span>��️</span><span class="hidden sm:inline">Eliminar</span>
               </button>
             </div>
           </td>
@@ -49,13 +64,25 @@
 <!-- Modal unificado para agregar/editar empleado -->
 <div *ngIf="mostrarModal" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 px-4">
   <div class="bg-white p-4 sm:p-6 rounded shadow-md w-full max-w-sm sm:max-w-md">
-    <h2 class="text-lg sm:text-xl font-semibold mb-4">{{ modoEdicion ? 'Editar Empleado' : 'Agregar Empleado' }}</h2>
-    <form (ngSubmit)="agregarEmpleado()" #formEmpleado="ngForm" class="space-y-3">
-      <input type="text" [(ngModel)]="nuevoEmpleado.nombre" name="nombre" placeholder="Nombre" required class="w-full p-2 border rounded text-sm sm:text-base" [class.border-red-500]="formEmpleado.submitted && !nuevoEmpleado.nombre" />
-      <input type="text" [(ngModel)]="nuevoEmpleado.cedula" name="cedula" placeholder="Cédula" required class="w-full p-2 border rounded text-sm sm:text-base" [class.border-red-500]="formEmpleado.submitted && !nuevoEmpleado.cedula" />
-      <input type="text" [(ngModel)]="nuevoEmpleado.telefono" name="telefono" placeholder="Teléfono" required class="w-full p-2 border rounded text-sm sm:text-base" [class.border-red-500]="formEmpleado.submitted && !nuevoEmpleado.telefono" />
-      <input type="text" [(ngModel)]="nuevoEmpleado.moto" name="moto" placeholder="Moto (placa)" class="w-full p-2 border rounded text-sm sm:text-base" />
-      <input type="text" [(ngModel)]="nuevoEmpleado.descanso" name="descanso" placeholder="Día de descanso" required class="w-full p-2 border rounded text-sm sm:text-base" [class.border-red-500]="formEmpleado.submitted && !nuevoEmpleado.descanso" />
+    <h2 class="text-lg sm:text-xl font-semibold mb-4">{{ modoEdicion ? 'Editar Usuario' : 'Agregar Usuario' }}</h2>
+    <form (ngSubmit)="agregarUsuario()" #formUsuario="ngForm" class="space-y-3">
+      <input type="text" [(ngModel)]="nuevoUsuario.nombre" name="nombre" placeholder="Nombre" required class="w-full p-2 border rounded text-sm sm:text-base" [class.border-red-500]="formUsuario.submitted && !nuevoUsuario.nombre" />
+      <input type="text" [(ngModel)]="nuevoUsuario.apellido" name="apellido" placeholder="Apellido" required class="w-full p-2 border rounded text-sm sm:text-base" [class.border-red-500]="formUsuario.submitted && !nuevoUsuario.apellido" />
+      <input type="email" [(ngModel)]="nuevoUsuario.email" name="email" placeholder="Email" required class="w-full p-2 border rounded text-sm sm:text-base" [class.border-red-500]="formUsuario.submitted && !nuevoUsuario.email" />
+      <input type="number" [(ngModel)]="nuevoUsuario.cedula" name="cedula" placeholder="Cédula" required class="w-full p-2 border rounded text-sm sm:text-base" [class.border-red-500]="formUsuario.submitted && !nuevoUsuario.cedula" />
+      <input type="text" [(ngModel)]="nuevoUsuario.telefono" name="telefono" placeholder="Teléfono" required class="w-full p-2 border rounded text-sm sm:text-base" [class.border-red-500]="formUsuario.submitted && !nuevoUsuario.telefono" />
+
+      <select [(ngModel)]="nuevoUsuario.rol" name="rol" required class="w-full p-2 border rounded text-sm sm:text-base">
+        <option value="cliente">Cliente</option>
+        <option value="empleado">Empleado</option>
+        <option value="admin">Administrador</option>
+      </select>
+
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" [(ngModel)]="nuevoUsuario.activo" name="activo" class="rounded">
+        <label class="text-sm sm:text-base">Usuario activo</label>
+      </div>
+
       <div class="flex flex-col sm:flex-row justify-between gap-2">
         <button type="submit" class="bg-green-600 text-white px-3 sm:px-4 py-2 rounded hover:bg-green-700 flex items-center justify-center gap-1 text-sm sm:text-base">
           <span>💾</span> {{ modoEdicion ? 'Guardar cambios' : 'Guardar' }}
@@ -65,56 +92,3 @@
     </form>
   </div>
 </div>
-<div *ngIf="mostrarPagos" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-4">
-<div class="bg-white p-4 sm:p-6 rounded shadow-md w-full max-w-sm sm:max-w-md">
-  <h2 class="text-lg sm:text-xl font-bold mb-4">Pagos de {{ empleadoSeleccionado?.nombre }}</h2>
-
-  <ul class="mb-4 space-y-2 text-sm sm:text-base">
-    <li *ngFor="let pago of empleadoSeleccionado?.pagos" class="border-b pb-2">
-      Semana {{ pago.semana }} - ${{ pago.monto }} -
-      <span [class.text-green-500]="pago.pagado" [class.text-red-500]="!pago.pagado">
-        {{ pago.pagado ? 'Pagado' : 'Pendiente' }}
-      </span>
-    </li>
-  </ul>
-
-  <div class="flex flex-col sm:flex-row gap-2">
-    <button (click)="registrarPago()" class="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-2 rounded text-sm sm:text-base">Registrar pago</button>
-    <button (click)="cerrarPagos()" class="text-red-500 hover:underline text-sm sm:text-base">Cerrar</button>
-  </div>
-</div>
-</div>
-
-
-<!-- Resumen de Pagos -->
-<div class="px-4 sm:px-6 lg:px-8 mt-8">
-  <h2 class="text-lg sm:text-xl lg:text-2xl font-bold mb-4 text-secondary text-center">Resumen de Pagos - Semana {{ obtenerSemanaActual() }}</h2>
-
-  <div class="overflow-x-auto rounded-lg shadow">
-    <table class="w-full bg-white border rounded text-xs sm:text-sm lg:text-base">
-      <thead class="bg-gray-100">
-        <tr>
-          <th class="px-2 sm:px-4 py-2 text-left">Empleado</th>
-          <th class="px-2 sm:px-4 py-2 text-left hidden sm:table-cell">Cédula</th>
-          <th class="px-2 sm:px-4 py-2 text-left hidden md:table-cell">Descanso</th>
-          <th class="px-2 sm:px-4 py-2 text-left">Estado</th>
-          <th class="px-2 sm:px-4 py-2 text-left">Monto</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let resumen of getResumenSemanal()" class="border-t">
-          <td class="px-2 sm:px-4 py-2 font-medium">{{ resumen.nombre }}</td>
-          <td class="px-2 sm:px-4 py-2 hidden sm:table-cell">{{ resumen.cedula }}</td>
-          <td class="px-2 sm:px-4 py-2 hidden md:table-cell">{{ resumen.descanso }}</td>
-          <td class="px-2 sm:px-4 py-2">
-            <span [class.text-green-600]="resumen.pagado" [class.text-red-600]="!resumen.pagado">
-              {{ resumen.pagado ? 'Pagado' : 'Pendiente' }}
-            </span>
-          </td>
-          <td class="px-2 sm:px-4 py-2">${{ resumen.monto }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
