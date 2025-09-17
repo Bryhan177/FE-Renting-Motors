@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { HomeEmpleadosComponent } from './home-empleados.component';
 
 describe('HomeEmpleadosComponent', () => {
@@ -9,8 +8,7 @@ describe('HomeEmpleadosComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HomeEmpleadosComponent]
-    })
-    .compileComponents();
+    }).compileComponents();
 
     fixture = TestBed.createComponent(HomeEmpleadosComponent);
     component = fixture.componentInstance;
@@ -19,5 +17,10 @@ describe('HomeEmpleadosComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('debería renderizar el título "Lista de empleados"', () => {
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('Lista de empleados');
   });
 });

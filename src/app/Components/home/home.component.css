@@ -5,9 +5,10 @@
   display: block;
 }
 .gradient {
-  background: radial-gradient(circle,
+  background-color: black;
+  /* background: radial-gradient(circle,
     rgba(0, 0, 0, 0.9) 80%,
-    rgba(255, 255, 255, 0) 100%);
+    rgba(255, 255, 255, 0) 100%); */
 }
 .selection-bg-secondary{
   background: radial-gradient(circle,

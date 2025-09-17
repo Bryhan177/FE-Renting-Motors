@@ -1,43 +1,43 @@
 <section class="min-h-screen flex items-center justify-center bg-gradient-to-tr from-gray-900 to-secondary px-4">
-  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-7xl p-6 md:p-12 animate-fade-in">
+  <div class="bg-black rounded-2xl shadow-2xl w-full max-w-7xl p-6 md:p-12 animate-fade-in">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
 
       <!-- Formulario -->
       <div>
-        <h2 class="text-3xl font-bold text-gray-800 text-center md:text-left">Crea tu cuenta 📝</h2>
-        <p class="text-gray-500 text-sm mb-6 text-center md:text-left">Únete a nuestra comunidad de conductores y arrendatarios</p>
+        <h2 class="text-3xl font-bold text-white text-center md:text-left">Crea tu cuenta 📝</h2>
+        <p class="text-white text-sm mb-6 text-center md:text-left">Únete a nuestra comunidad de conductores y arrendatarios</p>
 
         <form (ngSubmit)="agregarUsuario()" class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label class="block text-gray-700 font-medium">Nombre</label>
+            <label class="block text-white font-medium">Nombre</label>
             <input type="text" name="nombre" [(ngModel)]="nuevoUsuario.nombre" placeholder="Bryhan"
               class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:outline-none" />
           </div>
 
           <div>
-            <label class="block text-gray-700 font-medium">Apellido</label>
+            <label class="block text-white font-medium">Apellido</label>
             <input type="text" name="apellido" [(ngModel)]="nuevoUsuario.apellido" placeholder="Andrade"
               class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:outline-none" />
           </div>
 
           <div>
-            <label class="block text-gray-700 font-medium">Correo Electrónico</label>
+            <label class="block text-white font-medium">Correo Electrónico</label>
             <input type="email" name="email" [(ngModel)]="nuevoUsuario.email" placeholder="tucorreo@gmail.com"
               class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:outline-none" />
           </div>
 
           <div>
-            <label class="block text-gray-700 font-medium">Cedula</label>
+            <label class="block text-white font-medium">Cedula</label>
             <input type="number" name="cedula" [(ngModel)]="nuevoUsuario.cedula" placeholder="1234567890"
               class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:outline-none" />
           </div>
           <div>
-            <label class="block text-gray-700 font-medium">Teléfono</label>
+            <label class="block text-white font-medium">Teléfono</label>
             <input type="tel" name="telefono" [(ngModel)]="nuevoUsuario.telefono" placeholder="3001234567"
               class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:outline-none" />
           </div>
           <div>
-            <label class="block text-gray-700 font-medium">Rol</label>
+            <label class="block text-white font-medium">Rol</label>
             <select name="rol" [(ngModel)]="nuevoUsuario.rol" class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:outline-none">
               <option value="cliente">Cliente</option>
               <option value="empleado">Empleado</option>
@@ -46,38 +46,38 @@
           </div>
 
           <div class="md:col-span-2">
-            <label class="block text-gray-700 font-medium">Contraseña</label>
+            <label class="block text-white font-medium">Contraseña</label>
             <input type="password" name="password" [(ngModel)]="nuevoUsuario.password" placeholder="••••••••"
               class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:outline-none" />
           </div>
 
           <div class="md:col-span-2">
-            <label class="block text-gray-700 font-medium">Confirmar Contraseña</label>
+            <label class="block text-white font-medium">Confirmar Contraseña</label>
             <input type="password" name="confirmPassword" [(ngModel)]="nuevoUsuario.confirmPassword" placeholder="••••••••"
               class="w-full px-4 py-2 mt-1 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:outline-none" />
           </div>
 
           <div class="md:col-span-2 flex items-center gap-2">
             <input name="activo" [(ngModel)]="nuevoUsuario.activo" type="checkbox" class="text-secondary">
-            <label class="text-sm text-gray-600">Acepto los <a href="#" class="text-secondary underline">Términos y Condiciones</a></label>
+            <label class="text-sm text-white">Acepto los <a href="#" class="text-secondary underline">Términos y Condiciones</a></label>
           </div>
 
           <div class="md:col-span-2">
             <button type="submit"
-              class="w-full bg-secondary hover:bg-blue-700 text-white py-2 px-4 rounded-lg font-semibold transition duration-300">
+              class="w-full bg-secondary hover:text-white text-black py-2 px-4 rounded-lg font-semibold transition duration-300">
               Registrarme
             </button>
           </div>
         </form>
 
-        <p class="text-center text-gray-500 text-sm mt-4">¿Ya tienes cuenta?
+        <p class="text-center text-white text-sm mt-4">¿Ya tienes cuenta?
           <a (click)="goToLogin()" class="text-secondary font-medium hover:underline cursor-pointer">Inicia sesión</a>
         </p>
       </div>
 
       <!-- Imagen (solo visible en pantallas grandes) -->
       <div class="hidden md:block">
-        <img src="assets/images/prueba3.png" alt="Logo" class="w-full h-auto max-h-[600px] object-contain mx-auto">
+        <img src="assets/images/log_fondo_negro.png" alt="Logo" class="w-full h-auto max-h-[600px] object-contain mx-auto">
       </div>
     </div>
   </div>
