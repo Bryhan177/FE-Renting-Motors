@@ -32,10 +32,10 @@
 
       <select [(ngModel)]="nuevaMoto.estado" class="border p-2 rounded w-full text-sm sm:text-base">
         <option value="">Seleccionar estado</option>
-        <option value="Disponible">Disponible</option>
-        <option value="En uso">En uso</option>
-        <option value="Mantenimiento">Mantenimiento</option>
-        <option value="Fuera de servicio">Fuera de servicio</option>
+        <option value="disponible">Disponible</option>
+        <option value="en_uso">En uso</option>
+        <option value="en_mantenimiento">Mantenimiento</option>
+        <option value="fuera_servicio">Fuera de servicio</option>
       </select>
     </div>
 
@@ -60,6 +60,7 @@
           <th class="px-2 sm:px-4 py-2 text-left whitespace-nowrap">Modelo</th>
           <th class="px-2 sm:px-4 py-2 text-left whitespace-nowrap">Placa</th>
           <th class="px-2 sm:px-4 py-2 text-left whitespace-nowrap">Estado</th>
+          <th class="px-2 sm:px-4 py-2 text-left whitespace-nowrap">Conductor</th>
           <th class="px-2 sm:px-4 py-2 text-left whitespace-nowrap">Acciones</th>
         </tr>
       </thead>
@@ -71,26 +72,48 @@
           <td class="px-2 sm:px-4 py-2">
             <span
               [ngClass]="{
-                'text-green-600 font-bold': moto.estado === 'Disponible',
-                'text-blue-600 font-bold': moto.estado === 'En uso',
-                'text-yellow-500 font-bold': moto.estado === 'Mantenimiento',
-                'text-red-500 font-bold': moto.estado === 'Fuera de servicio'
+                'text-green-600 font-bold': moto.estado === 'disponible',
+                'text-blue-600 font-bold': moto.estado === 'en_uso',
+                'text-yellow-500 font-bold': moto.estado === 'en_mantenimiento',
+                'text-red-500 font-bold': moto.estado === 'fuera_servicio'
               }"
             >
-              <span *ngIf="moto.estado === 'Disponible'">🟢</span>
-              <span *ngIf="moto.estado === 'En uso'">🔵</span>
-              <span *ngIf="moto.estado === 'Mantenimiento'">🟡</span>
-              <span *ngIf="moto.estado === 'Fuera de servicio'">🔴</span>
+              <span *ngIf="moto.estado === 'disponible'">🟢</span>
+              <span *ngIf="moto.estado === 'en_uso'">🔵</span>
+              <span *ngIf="moto.estado === 'en_mantenimiento'">🟡</span>
+              <span *ngIf="moto.estado === 'fuera_servicio'">🔴</span>
               <span class="hidden sm:inline">{{ moto.estado }}</span>
             </span>
           </td>
           <td class="px-2 sm:px-4 py-2">
-            <div class="flex gap-1">
+            <span *ngIf="moto.conductor; else sinConductor">
+              {{ moto.conductor.nombre }} {{ moto.conductor.apellido }}
+            </span>
+            <ng-template #sinConductor>
+              <span class="text-gray-500">Sin asignar</span>
+            </ng-template>
+          </td>
+          <td class="px-2 sm:px-4 py-2">
+            <div class="flex flex-col sm:flex-row gap-1">
               <button
                 (click)="abrirModal(moto)"
                 class="bg-blue-500 hover:bg-blue-600 text-white px-2 sm:px-3 py-1 rounded flex items-center gap-1 text-xs sm:text-sm"
               >
                 <span>✏️</span> <span class="hidden sm:inline">Editar</span>
+              </button>
+              <button
+                *ngIf="!moto.conductorId"
+                (click)="abrirModalAsignar(moto)"
+                class="bg-green-500 hover:bg-green-600 text-white px-2 sm:px-3 py-1 rounded flex items-center gap-1 text-xs sm:text-sm"
+              >
+                <span>👤</span> <span class="hidden sm:inline">Asignar</span>
+              </button>
+              <button
+                *ngIf="moto.conductorId"
+                (click)="removerConductor(moto._id!)"
+                class="bg-orange-500 hover:bg-orange-600 text-white px-2 sm:px-3 py-1 rounded flex items-center gap-1 text-xs sm:text-sm"
+              >
+                <span>🚫</span> <span class="hidden sm:inline">Remover</span>
               </button>
               <button
                 (click)="eliminarMoto(moto._id!)"
@@ -128,10 +151,10 @@
           <label for="estado" class="block">Estado</label>
           <select id="estado" [(ngModel)]="motoEditada.estado" name="estado" class="border p-2 w-full" required>
             <option value="">Seleccionar estado</option>
-            <option value="Disponible">Disponible</option>
-            <option value="En uso">En uso</option>
-            <option value="Mantenimiento">Mantenimiento</option>
-            <option value="Fuera de servicio">Fuera de servicio</option>
+            <option value="disponible">Disponible</option>
+            <option value="en_uso">En uso</option>
+            <option value="en_mantenimiento">Mantenimiento</option>
+            <option value="fuera_servicio">Fuera de servicio</option>
           </select>
         </div>
       </div>
@@ -152,5 +175,43 @@
         </button>
       </div>
     </form>
+  </div>
+</div>
+
+<!-- Modal Asignar Conductor -->
+<div *ngIf="modalAsignarVisible" class="fixed inset-0 flex justify-center items-center bg-gray-900 bg-opacity-50 px-4 z-50">
+  <div class="bg-white p-6 rounded-lg shadow-lg w-full sm:w-2/3 md:w-1/2 max-w-lg max-h-[90vh] overflow-y-auto">
+    <h2 class="text-xl font-bold mb-4">Asignar Conductor</h2>
+    <p class="mb-4">Moto: {{ motoSeleccionada?.marca }} {{ motoSeleccionada?.modelo }} - {{ motoSeleccionada?.placa }}</p>
+
+    <div *ngIf="conductoresDisponibles.length === 0" class="text-center py-8">
+      <p class="text-gray-500">No hay conductores disponibles</p>
+    </div>
+
+    <div *ngIf="conductoresDisponibles.length > 0" class="space-y-2 max-h-60 overflow-y-auto">
+      <div *ngFor="let conductor of conductoresDisponibles"
+           class="flex items-center justify-between p-3 border rounded hover:bg-gray-50">
+        <div>
+          <p class="font-medium">{{ conductor.nombre }} {{ conductor.apellido }}</p>
+          <p class="text-sm text-gray-600">Cédula: {{ conductor.cedula }}</p>
+        </div>
+        <button
+          (click)="asignarConductor(conductor._id!)"
+          class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+        >
+          Asignar
+        </button>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-4">
+      <button
+        type="button"
+        class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded"
+        (click)="cerrarModalAsignar()"
+      >
+        Cancelar
+      </button>
+    </div>
   </div>
 </div>

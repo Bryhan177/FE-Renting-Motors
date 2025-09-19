@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MotosService, Moto } from '../../../service/motos.service';
+import { MotosService } from '../../../service/motos.service';
+import { Moto } from '../../../shared/interfaces/moto';
+import { Usuario } from '../../../shared/interfaces/usuario';
 import Swal from 'sweetalert2';
 
 @Component({
@@ -13,12 +15,16 @@ import Swal from 'sweetalert2';
 })
 export class MotosComponent implements OnInit {
   motos: Moto[] = [];
+  conductoresDisponibles: Usuario[] = [];
   modalVisible: boolean = false;
+  modalAsignarVisible: boolean = false;
+  motoSeleccionada: Moto | null = null;
   motoEditada: Moto = {
     marca: '',
     modelo: '',
     placa: '',
-    estado: ''
+    precio: 0,
+    estado: 'disponible'
   };
   formularioInvalido: boolean = false;
   isEditing = false;
@@ -28,13 +34,15 @@ export class MotosComponent implements OnInit {
     marca: '',
     modelo: '',
     placa: '',
-    estado: ''
+    precio: 0,
+    estado: 'disponible'
   };
 
   constructor(private motosService: MotosService) {}
 
   ngOnInit(): void {
     this.loadMotos();
+    this.loadConductoresDisponibles();
   }
 
   loadMotos(): void {
@@ -54,6 +62,17 @@ export class MotosComponent implements OnInit {
           background: '#FF4136',
           color: 'white',
         });
+      }
+    });
+  }
+
+  loadConductoresDisponibles(): void {
+    this.motosService.getConductoresDisponibles().subscribe({
+      next: (conductores) => {
+        this.conductoresDisponibles = conductores;
+      },
+      error: (error) => {
+        console.error('Error cargando conductores disponibles:', error);
       }
     });
   }
@@ -99,6 +118,84 @@ export class MotosComponent implements OnInit {
           position: 'top-end',
           icon: 'error',
           title: 'Error al crear la moto',
+          showConfirmButton: false,
+          timer: 1500,
+          toast: true,
+          background: '#FF4136',
+          color: 'white',
+        });
+      }
+    });
+  }
+
+  abrirModalAsignar(moto: Moto) {
+    this.motoSeleccionada = moto;
+    this.modalAsignarVisible = true;
+    this.loadConductoresDisponibles();
+  }
+
+  cerrarModalAsignar() {
+    this.modalAsignarVisible = false;
+    this.motoSeleccionada = null;
+  }
+
+  asignarConductor(conductorId: string) {
+    if (!this.motoSeleccionada) return;
+
+    this.motosService.asignarConductor(this.motoSeleccionada._id!, conductorId).subscribe({
+      next: () => {
+        this.loadMotos();
+        this.loadConductoresDisponibles();
+        this.cerrarModalAsignar();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: '✅ Conductor asignado correctamente!',
+          showConfirmButton: false,
+          timer: 1500,
+          toast: true,
+          background: '#28A745',
+          color: 'white',
+        });
+      },
+      error: (error) => {
+        console.error('Error asignando conductor:', error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al asignar conductor',
+          showConfirmButton: false,
+          timer: 1500,
+          toast: true,
+          background: '#FF4136',
+          color: 'white',
+        });
+      }
+    });
+  }
+
+  removerConductor(motoId: string) {
+    this.motosService.removerConductor(motoId).subscribe({
+      next: () => {
+        this.loadMotos();
+        this.loadConductoresDisponibles();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: '✅ Conductor removido correctamente!',
+          showConfirmButton: false,
+          timer: 1500,
+          toast: true,
+          background: '#28A745',
+          color: 'white',
+        });
+      },
+      error: (error) => {
+        console.error('Error removiendo conductor:', error);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'error',
+          title: 'Error al remover conductor',
           showConfirmButton: false,
           timer: 1500,
           toast: true,
@@ -204,13 +301,15 @@ export class MotosComponent implements OnInit {
       marca: '',
       modelo: '',
       placa: '',
-      estado: ''
+      precio: 0,
+      estado: 'disponible'
     };
     this.motoEditada = {
       marca: '',
       modelo: '',
       placa: '',
-      estado: ''
+      precio: 0,
+      estado: 'disponible'
     };
     this.isEditing = false;
     this.editingId = null;

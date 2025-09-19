@@ -40,7 +40,7 @@ describe('RegisterComponent', () => {
     expect(component.nuevoUsuario.email).toBe('');
     expect(component.nuevoUsuario.cedula).toBe(0);
     expect(component.nuevoUsuario.telefono).toBe('');
-    expect(component.nuevoUsuario.rol).toBe('cliente');
+    expect(component.nuevoUsuario.rol).toBe('usuario');
     expect(component.nuevoUsuario.activo).toBe(true);
     expect(component.nuevoUsuario.password).toBe('');
     expect(component.nuevoUsuario.confirmPassword).toBe('');
@@ -104,7 +104,7 @@ describe('RegisterComponent', () => {
       email: 'test@test.com',
       cedula: 12345678,
       telefono: '123456789',
-      rol: 'cliente',
+      rol: 'usuario',
       activo: true,
       password: 'password123'
     };
@@ -128,7 +128,7 @@ describe('RegisterComponent', () => {
       email: 'test@test.com',
       cedula: 12345678,
       telefono: '123456789',
-      rol: 'cliente',
+      rol: 'usuario',
       activo: true,
       password: 'password123'
     };
@@ -147,7 +147,7 @@ describe('RegisterComponent', () => {
     expect(component.nuevoUsuario.email).toBe('');
     expect(component.nuevoUsuario.cedula).toBe(0);
     expect(component.nuevoUsuario.telefono).toBe('');
-    expect(component.nuevoUsuario.rol).toBe('cliente');
+    expect(component.nuevoUsuario.rol).toBe('usuario');
     expect(component.nuevoUsuario.activo).toBe(true);
     expect(component.nuevoUsuario.password).toBe('');
     expect(component.nuevoUsuario.confirmPassword).toBe('');
@@ -160,7 +160,7 @@ describe('RegisterComponent', () => {
       email: 'test@test.com',
       cedula: 12345678,
       telefono: '123456789',
-      rol: 'cliente',
+      rol: 'usuario',
       activo: true,
       password: 'password123'
     };

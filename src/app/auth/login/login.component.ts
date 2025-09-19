@@ -26,7 +26,7 @@ export class LoginComponent {
     }
 
     if (
-      this.role === 'admin' &&
+      this.role === 'administrador' &&
       this.email === 'admin@gmail.com' &&
       this.password === 'admin123'
     ) {

@@ -5,7 +5,7 @@ export interface Usuario {
   email: string;
   cedula: number;
   telefono: string;
-  rol: 'admin' | 'cliente' | 'empleado';
+  rol: 'administrador' | 'asesor' | 'empleado';
   activo: boolean;
   createdAt?: Date;
   updatedAt?: boolean;

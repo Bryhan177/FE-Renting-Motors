@@ -18,7 +18,7 @@ export class RegisterComponent {
     email: '',
     cedula: 0,
     telefono: '',
-    rol: 'cliente',
+    rol: 'usuario',
     activo: true,
     password: '',
     confirmPassword: ''
@@ -103,7 +103,7 @@ export class RegisterComponent {
           email: '',
           cedula: 0,
           telefono: '',
-          rol: 'cliente',
+          rol: 'usuario',
           activo: true,
           password: '',
           confirmPassword: ''

@@ -1,7 +1,9 @@
 <!-- home.component.html -->
 <!-- home.component.html -->
-<div class="relative h-screen bg-cover bg-center flex flex-col md:flex-row">
-  <div class="absolute inset-0 gradient"></div>
+ <div>
+
+   <div class="relative h-screen bg-cover bg-center flex flex-col md:flex-row">
+     <div class="absolute inset-0 gradient"></div>
   <!-- Filtro oscuro -->
 
   <!-- Contenedor del contenido -->
@@ -39,69 +41,60 @@
 <section class="py-16 bg-white">
   <div class="container mx-auto px-6">
     <div class="grid md:grid-cols-2 gap-10">
+
       <!-- 🛵 Rentar Moto -->
-      <div class="text-center hover:bg-primary cursor-pointer card1">
-        <h2 class="text-4xl font-bold text-secondary mb-6">
-          🛵 Rentar una Moto
-        </h2>
-        <p class="text-lg text-white mb-4">
-          ¿Necesitas una moto para tus actividades diarias o trabajo? Tenemos lo
-          que buscas.
-        </p>
-        <p class="text-md text-white mb-6">
-          Motos seguras, económicas y listas para rodar. Elige la que mejor se
-          adapte a ti:
-        </p>
+      <div class="card">
+        <div class="content text-center">
+          <h2 class="text-2xl font-bold text-yellow-500 mb-4">🛵 Rentar una Moto</h2>
+          <p class="text-sm mb-2">
+            ¿Necesitas una moto para tus actividades diarias o trabajo?
+          </p>
+          <p class="text-sm mb-4">
+            Motos seguras, económicas y listas para rodar.
+          </p>
 
-        <ul
-          class="text-left max-w-md mx-auto mb-6 space-y-3 text-white list-disc list-inside"
-        >
-          <li>📍 Entrega rápida y cercana</li>
-          <li>🛠️ Mantenimiento incluido</li>
-          <li>🕒 Alquiler por días, semanas o meses</li>
-          <li>💳 Pago flexible</li>
-          <li>✅ Documentación al día</li>
-        </ul>
+          <ul class="text-left text-sm mb-4 list-disc list-inside">
+            <li>📍 Entrega rápida y cercana</li>
+            <li>🛠️ Mantenimiento incluido</li>
+            <li>🕒 Alquiler por días, semanas o meses</li>
+            <li>💳 Pago flexible</li>
+            <li>✅ Documentación al día</li>
+          </ul>
 
-        <button
-          class="bg-secondary hover:bg-blue-700 text-white py-3 px-6 rounded-lg shadow-md text-lg transition duration-300"
-        >
-          Ver Motos Disponibles
-        </button>
+          <button class="bg-yellow-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md text-sm">
+            Ver Motos Disponibles
+          </button>
+        </div>
       </div>
 
       <!-- 🚗 Únete como Conductor -->
-      <div class="text-center hover:bg-primary cursor-pointer card2">
-        <h2 class="text-4xl font-bold text-secondary mb-6">
-          🚗 Únete como Conductor
-        </h2>
-        <p class="text-lg text-white mb-4">
-          Gana dinero extra siendo parte de nuestro equipo. ¡Solo necesitas
-          ganas y una moto!
-        </p>
-        <p class="text-md text-white mb-6">
-          Si cumples con los requisitos, estás listo para comenzar:
-        </p>
+      <div class="card">
+        <div class="content text-center">
+          <h2 class="text-2xl font-bold text-yellow-500 mb-4">🚗 Únete como Conductor</h2>
+          <p class="text-sm mb-2">
+            Gana dinero extra siendo parte de nuestro equipo.
+          </p>
+          <p class="text-sm mb-4">
+            Solo necesitas ganas y una moto 🚀
+          </p>
 
-        <ul
-          class="text-left max-w-md mx-auto mb-6 space-y-3 text-white list-disc list-inside"
-        >
-          <li>📅 Disponibilidad de horario</li>
-          <li>🪪 Licencia de conducir vigente</li>
-          <li>🏍️ Experiencia de conducción</li>
-          <li>🔧 Conocimiento básico de la moto</li>
-          <li>🛡️ Enfoque en la seguridad</li>
-        </ul>
+          <ul class="text-left text-sm mb-4 list-disc list-inside">
+            <li>📅 Disponibilidad de horario</li>
+            <li>🪪 Licencia de conducir vigente</li>
+            <li>🏍️ Experiencia de conducción</li>
+            <li>🔧 Conocimiento básico de la moto</li>
+            <li>🛡️ Enfoque en la seguridad</li>
+          </ul>
 
-        <button
-          class="bg-secondary hover:bg-blue-700 text-white py-3 px-6 rounded-lg shadow-md text-lg transition duration-300"
-        >
-          ¡Aplica Ahora!
-        </button>
+          <button class="bg-yellow-500 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow-md text-sm">
+            ¡Aplica Ahora!
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </section>
+
 
 <!-- Sección de planes -->
 <!-- AQUI ME GUSTARIA CAMBIAR LOS PALNES POR 3 CARD DE MOTOS CON EL NOMBRE Y EL PRECIO DE ALQUILER POR DIA Y SEMANA -->
@@ -140,5 +133,58 @@
     </div>
   </div>
 </section>
+
+<!-- Fin sección de planes -->
+<div class="w-full bg-black py-16 overflow-hidden flex flex-col items-center">
+  <!-- Fila 1 -->
+  <div class="flex gap-8 animate-left">
+    <div *ngFor="let t of testimonios" class="group relative w-[380px]">
+      <div
+        class="relative overflow-hidden rounded-2xl bg-black shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-indigo-500/10"
+      >
+        <!-- Glow top-left -->
+        <div
+          class="absolute -left-16 -top-16 h-32 w-32 rounded-full bg-gradient-to-br from-yellow-500 to-purple-500/0 blur-2xl transition-all duration-500 group-hover:scale-150 group-hover:opacity-70"
+        ></div>
+        <!-- Glow bottom-right -->
+        <div
+          class="absolute -right-16 -bottom-16 h-32 w-32 rounded-full bg-gradient-to-br from-yellow-500 to-indigo-500/0 blur-2xl transition-all duration-500 group-hover:scale-150 group-hover:opacity-70"
+        ></div>
+
+        <!-- Contenido -->
+        <div class="relative p-6">
+          <h3 class="text-xl font-semibold text-white">{{ t.titulo }}</h3>
+          <p class="mt-2 text-slate-400">{{ t.comentario }}</p>
+          <p class="mt-4 text-sm text-slate-500">— {{ t.nombre }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fila 2 -->
+  <div class="flex gap-8 animate-right mt-12">
+    <div *ngFor="let t of testimonios" class="group relative w-[380px]">
+      <div
+        class="relative overflow-hidden rounded-2xl bg-black shadow-2xl transition-all duration-300 hover:-translate-y-1 hover:shadow-indigo-500/10"
+      >
+        <div
+          class="absolute -left-16 -top-16 h-32 w-32 rounded-full bg-gradient-to-br from-yellow-500 to-purple-500/0 blur-2xl transition-all duration-500 group-hover:scale-150 group-hover:opacity-70"
+        ></div>
+        <div
+          class="absolute -right-16 -bottom-16 h-32 w-32 rounded-full bg-gradient-to-br from-yellow-500 to-indigo-500/0 blur-2xl transition-all duration-500 group-hover:scale-150 group-hover:opacity-70"
+        ></div>
+
+        <div class="relative p-6">
+          <h3 class="text-xl font-semibold text-white">{{ t.titulo }}</h3>
+          <p class="mt-2 text-slate-400">{{ t.comentario }}</p>
+          <p class="mt-4 text-sm text-slate-500">— {{ t.nombre }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
 
 

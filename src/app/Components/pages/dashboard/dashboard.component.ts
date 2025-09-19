@@ -1,6 +1,10 @@
-import { Component } from '@angular/core';
-import { Empleado } from '../../../shared/interfaces/empleados';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MotosService } from '../../../service/motos.service';
+import { PagosService } from '../../../service/pagos.service';
+import { Moto } from '../../../shared/interfaces/moto';
+import { Pago, Estadisticas } from '../../../shared/interfaces/pago';
+import { Usuario } from '../../../shared/interfaces/usuario';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,24 +13,71 @@ import { CommonModule } from '@angular/common';
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'
 })
-export class DashboardComponent {
-  empleados: Empleado[] = [
-    {
-      nombre: 'Jhon Perez', cedula: '123456789', telefono: '3001234567',
-      moto: 'ABC123', descanso: 'Miércoles', pagos: [
-        { semana: '2025-W17', monto: 220000, pagado: true }
-      ]
-    },
-    {
-      nombre: 'Carlos Manuel', cedula: '987654321', telefono: '3009876543',
-      moto: 'XYZ456', descanso: 'Viernes', pagos: []
-    },
-  ];
+export class DashboardComponent implements OnInit {
+  motos: Moto[] = [];
+  pagos: Pago[] = [];
+  conductores: Usuario[] = [];
+  estadisticas: Estadisticas | null = null;
+  loading = true;
+  conductoresPendientes: Usuario[] = [];
 
   semanaActual = this.obtenerSemanaActual();
-  motosOperativas = this.empleados.length;
-  totalRecaudado = this.calcularTotalRecaudado();
-  empleadosPendientes = this.obtenerPendientes();
+
+  constructor(
+    private motosService: MotosService,
+    private pagosService: PagosService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(): void {
+    this.loading = true;
+
+    // Cargar estadísticas
+    this.motosService.getEstadisticas().subscribe({
+      next: (estadisticas) => {
+        this.estadisticas = estadisticas;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('Error cargando estadísticas:', error);
+        this.loading = false;
+      }
+    });
+
+    // Cargar motos
+    this.motosService.getMotos().subscribe({
+      next: (motos) => {
+        this.motos = motos;
+      },
+      error: (error) => {
+        console.error('Error cargando motos:', error);
+      }
+    });
+
+    // Cargar pagos de la semana actual
+    this.pagosService.getPagosBySemana(this.semanaActual).subscribe({
+      next: (pagos) => {
+        this.pagos = pagos;
+        this.calcularConductoresPendientes();
+      },
+      error: (error) => {
+        console.error('Error cargando pagos:', error);
+      }
+    });
+  }
+
+  calcularConductoresPendientes(): void {
+    // Conductores que tienen pagos pendientes esta semana
+    this.conductoresPendientes = this.pagos
+      .filter(pago => !pago.pagado && pago.conductor)
+      .map(pago => pago.conductor!)
+      .filter((conductor, index, self) =>
+        index === self.findIndex(c => c._id === conductor._id)
+      );
+  }
 
   obtenerSemanaActual(): string {
     const date = new Date();
@@ -36,89 +87,76 @@ export class DashboardComponent {
     return `${date.getFullYear()}-W${semana.toString().padStart(2, '0')}`;
   }
 
-  calcularTotalRecaudado(): number {
-    let total = 0;
-    this.empleados.forEach(emp => {
-      emp.pagos?.forEach(p => {
-        if (p.semana === this.semanaActual && p.pagado) {
-          total += p.monto;
-        }
-      });
-    });
-    return total;
+  // Getters para compatibilidad con template
+  get empleadosActivos(): number {
+    return this.estadisticas?.motosAsignadas || 0;
   }
 
-  obtenerPendientes(): Empleado[] {
-    return this.empleados.filter(emp =>
-      !emp.pagos?.some(p => p.semana === this.semanaActual && p.pagado)
-    );
+  get motosOperativas(): number {
+    return this.estadisticas?.motosAsignadas || 0;
   }
 
-  // Métricas adicionales
-  getEmpleadosActivosPorcentaje(): number {
-    const totalEmpleados = this.empleados.length;
-    const empleadosActivos = this.empleados.filter(emp => emp.moto).length;
-    return totalEmpleados > 0 ? Math.round((empleadosActivos / totalEmpleados) * 100) : 0;
+  get totalRecaudado(): number {
+    return this.estadisticas?.totalRecaudadoSemana || 0;
   }
 
+  get empleadosPendientes(): Usuario[] {
+    return this.conductoresPendientes;
+  }
+
+  // Métodos adicionales para métricas
   getMotosDisponiblesPorcentaje(): number {
-    const totalMotos = 10; // Simulado - en realidad vendría de un servicio
-    return totalMotos > 0 ? Math.round((this.motosOperativas / totalMotos) * 100) : 0;
+    const totalMotos = this.estadisticas?.totalMotos || 0;
+    const motosDisponibles = this.estadisticas?.motosDisponibles || 0;
+    return totalMotos > 0 ? Math.round((motosDisponibles / totalMotos) * 100) : 0;
   }
 
   getPendientesPorcentaje(): number {
-    const totalEmpleados = this.empleados.length;
-    return totalEmpleados > 0 ? Math.round((this.empleadosPendientes.length / totalEmpleados) * 100) : 0;
+    const totalConductores = this.estadisticas?.motosAsignadas || 0;
+    return totalConductores > 0 ? Math.round((this.conductoresPendientes.length / totalConductores) * 100) : 0;
   }
 
   getEficienciaPorcentaje(): number {
-    const pagosCompletados = this.empleados.filter(emp =>
-      emp.pagos?.some(p => p.semana === this.semanaActual && p.pagado)
-    ).length;
-    const totalEmpleados = this.empleados.length;
-    return totalEmpleados > 0 ? Math.round((pagosCompletados / totalEmpleados) * 100) : 0;
-  }
-
-  getPromedioSemanal(): number {
-    const pagosSemana = this.empleados.flatMap(emp =>
-      emp.pagos?.filter(p => p.semana === this.semanaActual) || []
-    );
-    if (pagosSemana.length === 0) return 0;
-    const total = pagosSemana.reduce((sum, p) => sum + p.monto, 0);
-    return Math.round(total / pagosSemana.length);
-  }
-
-  getMinimoSemanal(): number {
-    const pagosSemana = this.empleados.flatMap(emp =>
-      emp.pagos?.filter(p => p.semana === this.semanaActual) || []
-    );
-    if (pagosSemana.length === 0) return 0;
-    return Math.min(...pagosSemana.map(p => p.monto));
-  }
-
-  getMaximoSemanal(): number {
-    const pagosSemana = this.empleados.flatMap(emp =>
-      emp.pagos?.filter(p => p.semana === this.semanaActual) || []
-    );
-    if (pagosSemana.length === 0) return 0;
-    return Math.max(...pagosSemana.map(p => p.monto));
+    const totalConductores = this.estadisticas?.motosAsignadas || 0;
+    const conductoresPagados = totalConductores - this.conductoresPendientes.length;
+    return totalConductores > 0 ? Math.round((conductoresPagados / totalConductores) * 100) : 0;
   }
 
   getTotalAlertas(): number {
     let alertas = 0;
-    if (this.getMotosVencimiento() > 0) alertas++;
-    if (this.empleadosPendientes.length > 0) alertas++;
-    if (this.getMotosMantenimiento() > 0) alertas++;
+    if (this.conductoresPendientes.length > 0) alertas++;
+    // Aquí se pueden agregar más alertas en el futuro
     return alertas;
   }
 
-  getMotosVencimiento(): number {
-    // Simulado - en realidad vendría de un servicio de motos
-    return Math.floor(Math.random() * 3); // 0-2 motos con documentos vencidos
+  // Métodos para mostrar estado de motos
+  getEstadoClass(estado: string): string {
+    switch (estado) {
+      case 'disponible':
+        return 'bg-green-100 text-green-800';
+      case 'en_uso':
+        return 'bg-blue-100 text-blue-800';
+      case 'en_mantenimiento':
+        return 'bg-yellow-100 text-yellow-800';
+      case 'fuera_servicio':
+        return 'bg-red-100 text-red-800';
+      default:
+        return 'bg-gray-100 text-gray-800';
+    }
   }
 
-  getMotosMantenimiento(): number {
-    // Simulado - en realidad vendría de un servicio de motos
-    return Math.floor(Math.random() * 2); // 0-1 motos en mantenimiento
+  getEstadoText(estado: string): string {
+    switch (estado) {
+      case 'disponible':
+        return 'Disponible';
+      case 'en_uso':
+        return 'En Uso';
+      case 'en_mantenimiento':
+        return 'Mantenimiento';
+      case 'fuera_servicio':
+        return 'Fuera de Servicio';
+      default:
+        return estado;
+    }
   }
 }

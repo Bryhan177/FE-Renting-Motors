@@ -11,9 +11,10 @@
     rgba(255, 255, 255, 0) 100%); */
 }
 .selection-bg-secondary{
-  background: radial-gradient(circle,
+  background-color: black;
+  /* background: radial-gradient(circle,
     rgba(0, 0, 0, 0.9) 80%,
-    rgba(255, 255, 255, 0) 100%);
+    rgba(255, 255, 255, 0) 100%); */
 }
 .card1{
   background: radial-gradient(circle,
@@ -35,5 +36,211 @@
 
 .card_moto {
   flex: 0 0 320px;
+}
+
+
+
+/* Card base */
+.card {
+  width: 100%;
+  min-height: 400px;
+  background: #171717;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: relative;
+  border-radius: 12px;
+  box-shadow: 0px 0px 6px 2px #00000055;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+.card:hover {
+  transform: scale(1.03);
+}
+
+/* Contenido */
+.card .content {
+  border-radius: 12px;
+  background: #171717;
+  width: 95%;
+  min-height: 95%;
+  z-index: 1;
+  padding: 20px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Efecto Glow */
+.content::before {
+  opacity: 0;
+  transition: opacity 300ms;
+  content: " ";
+  display: block;
+  background: white;
+  width: 5px;
+  height: 50px;
+  position: absolute;
+  filter: blur(50px);
+}
+.card:hover .content::before {
+  opacity: 1;
+}
+
+/* Bordes animados */
+.card::before {
+  opacity: 0;
+  content: " ";
+  position: absolute;
+  display: block;
+  width: 120px;
+  height: 500px;
+  background: linear-gradient(yellow);
+  transition: opacity 300ms;
+  animation: rotation_9018 5000ms infinite linear;
+  animation-play-state: paused;
+}
+.card:hover::before {
+  opacity: 1;
+  animation-play-state: running;
+}
+.card::after {
+  position: absolute;
+  content: " ";
+  display: block;
+  width: 300px;
+  height: 500px;
+  background: yellow;
+  backdrop-filter: blur(40px);
+}
+
+@keyframes rotation_9018 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Card atractiva tipo Uiverse --- */
+.card {
+  width: 560px;
+  height: 200px;
+  background: #171717;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  box-shadow: 0px 0px 8px 2px yellow;
+  cursor: pointer;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.card .content {
+  border-radius: 12px;
+  background: #000000;
+  width: 95%;
+  height: 95%;
+  padding: 20px;
+  color: white;
+  z-index: 1;
+}
+
+/* Glow animado */
+.card::before {
+  content: "";
+  position: absolute;
+  width: 120px;
+  height: 360px;
+  background: linear-gradient(#ffffff, #ffffff);
+  animation: rotation 3s infinite linear;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: yellow;
+  backdrop-filter: blur(30px);
+  border-radius: 16px;
+}
+
+@keyframes rotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Animaciones de movimiento (rebote centrado) */
+@keyframes move-left {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-200px); }
+}
+
+@keyframes move-right {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(200px); }
+}
+
+.animate-left {
+  animation: move-left 10s ease-in-out infinite alternate;
+}
+
+.animate-right {
+  animation: move-right 10s ease-in-out infinite alternate;
+}
+
+/* Media queries para responsive */
+@media (max-width: 768px) {
+  .card {
+    width: 100%;
+    height: auto;
+    min-height: 300px;
+  }
+
+  .card .content {
+    width: 100%;
+    height: auto;
+    min-height: 280px;
+    padding: 15px;
+  }
+
+  .card_moto {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .list_motos {
+    gap: 20px;
+    padding: 10px;
+  }
+
+  .animate-left,
+  .animate-right {
+    animation: none; /* Desactivar animaciones en móviles para mejor rendimiento */
+  }
+
+  [class*="w-[380px]"] {
+    width: 100% !important;
+    max-width: 320px;
+  }
+
+  .flex.gap-8 {
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+
+  .card::before,
+  .card::after {
+    display: none; /* Ocultar efectos glow en móviles para simplicidad */
+  }
+
+  .content::before {
+    display: none;
+  }
 }
 

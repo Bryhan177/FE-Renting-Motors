@@ -33,7 +33,7 @@ describe('UsuariosService', () => {
         email: 'juan@test.com',
         cedula: 12345678,
         telefono: '123456789',
-        rol: 'cliente',
+        rol: 'usuario',
         activo: true
       },
       {
@@ -65,7 +65,7 @@ describe('UsuariosService', () => {
       email: 'juan@test.com',
       cedula: 12345678,
       telefono: '123456789',
-      rol: 'cliente',
+      rol: 'usuario',
       activo: true
     };
 
@@ -85,7 +85,7 @@ describe('UsuariosService', () => {
       email: 'carlos@test.com',
       cedula: 11223344,
       telefono: '555666777',
-      rol: 'cliente',
+      rol: 'usuario',
       activo: true,
       password: 'password123'
     };
@@ -110,7 +110,7 @@ describe('UsuariosService', () => {
       email: 'juan@test.com',
       cedula: 12345678,
       telefono: '123456789',
-      rol: 'cliente',
+      rol: 'usuario',
       activo: false
     };
 
@@ -132,7 +132,7 @@ describe('UsuariosService', () => {
       email: 'juan@test.com',
       cedula: 12345678,
       telefono: '123456789',
-      rol: 'cliente',
+      rol: 'usuario',
       activo: true
     };
 

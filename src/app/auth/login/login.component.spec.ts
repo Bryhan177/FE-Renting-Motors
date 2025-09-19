@@ -45,10 +45,10 @@ describe('LoginComponent', () => {
     expect(component.error).toBe('Por favor, seleccione un rol');
   });
 
-  it('should navigate to dashboard for valid admin credentials', () => {
-    component.role = 'admin';
-    component.email = 'admin@gmail.com';
-    component.password = 'admin123';
+  it('should navigate to dashboard for valid administrador credentials', () => {
+    component.role = 'administrador';
+    component.email = 'administrador@gmail.com';
+    component.password = 'administrador123';
 
     component.onLogin();
 
@@ -78,7 +78,7 @@ describe('LoginComponent', () => {
   });
 
   it('should show error for invalid credentials', () => {
-    component.role = 'admin';
+    component.role = 'administrador';
     component.email = 'wrong@gmail.com';
     component.password = 'wrong123';
 

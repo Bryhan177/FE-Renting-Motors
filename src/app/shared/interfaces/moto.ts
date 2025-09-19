@@ -1,9 +1,15 @@
+import { Usuario } from './usuario';
+
 export interface Moto {
-  placa: string;
+  _id?: string;
+  marca: string;
   modelo: string;
-  anio: number;
-  soat: string; // formato fecha ISO
-  tecnomecanica: string;
-  estado: 'Activa' | 'En mantenimiento' | 'Inactiva';
+  placa: string;
+  precio: number; // Precio de alquiler diario en COP
+  estado: 'disponible' | 'en_uso' | 'en_mantenimiento' | 'fuera_servicio';
+  conductorId?: string | null; // Conductor asignado
+  conductor?: Usuario; // Información del conductor (populate)
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
