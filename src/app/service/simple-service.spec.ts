@@ -20,3 +20,4 @@ describe('Simple Service Test', () => {
     expect(mockAsyncService.fetchData).toHaveBeenCalledTimes(1);
   });
 });
+

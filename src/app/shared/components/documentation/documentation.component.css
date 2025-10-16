@@ -1,0 +1,97 @@
+.documentation-container {
+  background-color: #000;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+h2 {
+  color: #FFD700;
+  margin-bottom: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  background-color: #222;
+  color: #fff;
+  border: 1px solid #FFD700;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background-color: #FFD700;
+  color: #000;
+  font-weight: bold;
+}
+
+.documents-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.document-card {
+  background-color: #111;
+  border: 1px solid #FFD700;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.doc-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.doc-header h4 {
+  margin: 0;
+  color: #FFD700;
+}
+
+.doc-header .vigente {
+  color: #00ff99;
+}
+
+.doc-header .vencido {
+  color: #ff4444;
+}
+
+.doc-header .pendiente {
+  color: #ffcc00;
+}
+
+.doc-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.icon-button {
+  background-color: #FFD700;
+  border: none;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.icon-button:hover {
+  background-color: #e6c200;
+}
+
+.icon-button svg {
+  width: 20px;
+  height: 20px;
+  fill: #000;
+}

@@ -145,3 +145,4 @@ describe('UsuariosService', () => {
     req.flush(deletedUsuario);
   });
 });
+

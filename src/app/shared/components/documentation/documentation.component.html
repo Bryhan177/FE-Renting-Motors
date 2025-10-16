@@ -1,0 +1,43 @@
+<div class="documentation-container">
+  <h2>Centro de Documentación</h2>
+
+  <div class="tabs">
+    <button [class.active]="activeTab === 'vehicle'" (click)="activeTab = 'vehicle'">Vehículo</button>
+    <button [class.active]="activeTab === 'user'" (click)="activeTab = 'user'">Usuarios</button>
+    <button [class.active]="activeTab === 'contract'" (click)="activeTab = 'contract'">Contratos</button>
+    <button [class.active]="activeTab === 'other'" (click)="activeTab = 'other'">Otros</button>
+  </div>
+
+  <div class="documents-list">
+    <div class="document-card" *ngFor="let doc of filteredDocuments">
+      <div class="doc-header">
+        <h4>{{ doc.name }}</h4>
+        <span [class]="doc.status">{{ doc.status }}</span>
+      </div>
+      <p><strong>Subido por:</strong> {{ doc.uploadedBy }}</p>
+      <p><strong>Fecha de carga:</strong> {{ doc.uploadDate }}</p>
+      <p *ngIf="doc.expirationDate"><strong>Vence:</strong> {{ doc.expirationDate }}</p>
+      <p *ngIf="doc.notes"><strong>Notas:</strong> {{ doc.notes }}</p>
+
+      <div class="doc-actions">
+        <button class="icon-button" title="Ver">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.73 8.11 1 12c1.73 3.89 6 7.5 11 7.5s9.27-3.61 11-7.5c-1.73-3.89-6-7.5-11-7.5zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/>
+          </svg>
+        </button>
+
+        <button class="icon-button" title="Editar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+          </svg>
+        </button>
+
+        <button class="icon-button" title="Eliminar">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

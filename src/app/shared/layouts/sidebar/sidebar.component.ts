@@ -33,10 +33,10 @@ export class SidebarComponent {
     this.router.navigate(['/pagos']);
   }
   goHistorial() {
-    this.router.navigate(['/historial']);
+    this.router.navigate(['/history-vehicle']);
   }
   goDocumentacion() {
-    this.router.navigate(['/documentacion']);
+    this.router.navigate(['/documentation']);
   }
   toggleSidebar() {
     this.showSidebar = !this.showSidebar;

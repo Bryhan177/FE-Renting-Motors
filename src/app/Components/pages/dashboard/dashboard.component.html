@@ -11,33 +11,33 @@
    <!-- Conductores Activos -->
    <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-blue-500 flex flex-col items-center text-center">
      <span class="text-3xl sm:text-4xl mb-2">🧑‍🔧</span>
-     <h2 class="text-base sm:text-lg font-semibold text-gray-700">Conductores Activos</h2>
+     <h2 class="text-base sm:text-lg font-semibold text-white">Conductores Activos</h2>
      <p class="text-2xl sm:text-3xl font-bold text-blue-600">{{ empleadosActivos }}</p>
-     <p class="text-sm text-gray-500">{{ getEficienciaPorcentaje() }}% eficiencia</p>
+     <p class="text-sm text-white">{{ getEficienciaPorcentaje() }}% eficiencia</p>
    </div>
 
    <!-- Motos Totales -->
    <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-green-500 flex flex-col items-center text-center">
      <span class="text-3xl sm:text-4xl mb-2">🛵</span>
-     <h2 class="text-base sm:text-lg font-semibold text-gray-700">Total Motos</h2>
+     <h2 class="text-base sm:text-lg font-semibold text-white">Total Motos</h2>
      <p class="text-2xl sm:text-3xl font-bold text-green-600">{{ estadisticas?.totalMotos || 0 }}</p>
-     <p class="text-sm text-gray-500">{{ estadisticas?.motosDisponibles || 0 }} disponibles</p>
+     <p class="text-sm text-white">{{ estadisticas?.motosDisponibles || 0 }} disponibles</p>
    </div>
 
    <!-- Total Recaudado -->
    <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-yellow-500 flex flex-col items-center text-center">
      <span class="text-3xl sm:text-4xl mb-2">💰</span>
-     <h2 class="text-base sm:text-lg font-semibold text-gray-700">Recaudado Semana</h2>
+     <h2 class="text-base sm:text-lg font-semibold text-white">Recaudado Semana</h2>
      <p class="text-2xl sm:text-3xl font-bold text-yellow-600">$ {{ totalRecaudado | number }}</p>
-     <p class="text-sm text-gray-500">Semana {{ semanaActual }}</p>
+     <p class="text-sm text-white">Semana {{ semanaActual }}</p>
    </div>
 
    <!-- Pagos Pendientes -->
    <div class="bg-white shadow-lg rounded-xl p-4 sm:p-6 border-b-4 border-red-500 flex flex-col items-center text-center">
      <span class="text-3xl sm:text-4xl mb-2">🚨</span>
-     <h2 class="text-base sm:text-lg font-semibold text-gray-700">Pagos Pendientes</h2>
+     <h2 class="text-base sm:text-lg font-semibold text-white">Pagos Pendientes</h2>
      <p class="text-2xl sm:text-3xl font-bold text-red-600">{{ empleadosPendientes.length }}</p>
-     <p class="text-sm text-gray-500">{{ getPendientesPorcentaje() }}% pendiente</p>
+     <p class="text-sm text-white">{{ getPendientesPorcentaje() }}% pendiente</p>
    </div>
 </div>
 
@@ -46,12 +46,12 @@
      <span>🚨</span> Pagos Pendientes - Semana {{ semanaActual }}
    </h2>
    <ng-container *ngIf="empleadosPendientes.length > 0; else noPendientes">
-     <ul class="divide-y divide-gray-100">
+     <ul class="divide-y divide-white">
        <li *ngFor="let conductor of empleadosPendientes" class="py-3 flex flex-wrap sm:flex-nowrap items-center gap-2 sm:gap-4">
          <div class="flex-1">
            <span class="text-base sm:text-lg font-bold text-red-600">{{ conductor.nombre }} {{ conductor.apellido }}</span>
-           <span class="text-gray-700 text-sm block">Cédula: {{ conductor.cedula }}</span>
-           <span class="text-gray-500 text-xs block">Tel: {{ conductor.telefono }}</span>
+           <span class="text-white text-sm block">Cédula: {{ conductor.cedula }}</span>
+           <span class="text-white text-xs block">Tel: {{ conductor.telefono }}</span>
          </div>
          <span class="ml-auto bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-semibold">Pago Pendiente</span>
        </li>
@@ -72,13 +72,13 @@
    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
      <div *ngFor="let moto of motos.slice(0, 6)" class="border rounded-lg p-3">
        <div class="flex justify-between items-start mb-2">
-         <span class="font-semibold text-gray-800">{{ moto.placa }}</span>
+         <span class="font-semibold text-white">{{ moto.placa }}</span>
          <span [class]="getEstadoClass(moto.estado)" class="px-2 py-1 rounded text-xs font-semibold">
            {{ getEstadoText(moto.estado) }}
          </span>
        </div>
-       <p class="text-sm text-gray-600">{{ moto.marca }} {{ moto.modelo }}</p>
-       <p class="text-sm text-gray-500" *ngIf="moto.conductor">
+       <p class="text-sm text-white">{{ moto.marca }} {{ moto.modelo }}</p>
+       <p class="text-sm text-white" *ngIf="moto.conductor">
          Conductor: {{ moto.conductor.nombre }} {{ moto.conductor.apellido }}
        </p>
        <p class="text-sm text-green-600 font-semibold" *ngIf="moto.precio">
@@ -86,7 +86,7 @@
        </p>
      </div>
    </div>
-   <p class="text-center text-gray-500 text-sm mt-4" *ngIf="motos.length > 6">
+   <p class="text-center text-white text-sm mt-4" *ngIf="motos.length > 6">
      Mostrando 6 de {{ motos.length }} motos
    </p>
 </div>
