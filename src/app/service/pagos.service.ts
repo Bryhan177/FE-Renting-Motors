@@ -1,50 +1,119 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, from, map } from 'rxjs';
 import { Pago, CreatePagoPayload } from '../shared/interfaces/pago';
+import { supabase } from '../supabase/supabase.client';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PagosService {
-  private apiUrl = 'http://localhost:3000/pagos';
 
-  constructor(private http: HttpClient) { }
+  constructor() { }
+
+  private mapPago(pago: any): Pago {
+    return {
+      ...pago,
+      _id: pago.id,
+      conductorId: pago.conductor_id,
+      conductor: pago.conductor ? { ...pago.conductor, _id: pago.conductor.id } : undefined,
+      fechaPago: pago.fecha_pago
+    };
+  }
 
   getPagos(): Observable<Pago[]> {
-    return this.http.get<Pago[]>(this.apiUrl);
+    return from(supabase.from('pagos').select('*, conductor:usuarios(*)')).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return (data || []).map(p => this.mapPago(p));
+      })
+    );
   }
 
   getPago(id: string): Observable<Pago> {
-    return this.http.get<Pago>(`${this.apiUrl}/${id}`);
+    return from(supabase.from('pagos').select('*, conductor:usuarios(*)').eq('id', id).single()).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return this.mapPago(data);
+      })
+    );
   }
 
   createPago(pago: CreatePagoPayload): Observable<Pago> {
-    return this.http.post<Pago>(this.apiUrl, pago);
+    const payload = {
+      conductor_id: pago.conductorId,
+      semana: pago.semana,
+      monto: pago.monto,
+      pagado: pago.pagado || false,
+      fecha_pago: pago.fechaPago || null
+    };
+    return from(supabase.from('pagos').insert(payload).select().single()).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return this.mapPago(data);
+      })
+    );
   }
 
   updatePago(id: string, pago: Partial<Pago>): Observable<Pago> {
-    return this.http.patch<Pago>(`${this.apiUrl}/${id}`, pago);
+    const payload: any = { ...pago };
+    if (pago.conductorId !== undefined) payload.conductor_id = pago.conductorId;
+    if (pago.fechaPago !== undefined) payload.fecha_pago = pago.fechaPago;
+    delete payload._id;
+    delete payload.conductorId;
+    delete payload.fechaPago;
+    delete payload.conductor;
+
+    return from(supabase.from('pagos').update(payload).eq('id', id).select().single()).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return this.mapPago(data);
+      })
+    );
   }
 
   deletePago(id: string): Observable<Pago> {
-    return this.http.delete<Pago>(`${this.apiUrl}/${id}`);
+    return from(supabase.from('pagos').delete().eq('id', id).select().single()).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return this.mapPago(data);
+      })
+    );
   }
 
   // Métodos específicos para el negocio
   getPagosByConductor(conductorId: string): Observable<Pago[]> {
-    return this.http.get<Pago[]>(`${this.apiUrl}/conductor/${conductorId}`);
+    return from(supabase.from('pagos').select('*, conductor:usuarios(*)').eq('conductor_id', conductorId)).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return (data || []).map(p => this.mapPago(p));
+      })
+    );
   }
 
   getPagosBySemana(semana: string): Observable<Pago[]> {
-    return this.http.get<Pago[]>(`${this.apiUrl}/semana/${semana}`);
+    return from(supabase.from('pagos').select('*, conductor:usuarios(*)').eq('semana', semana)).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return (data || []).map(p => this.mapPago(p));
+      })
+    );
   }
 
   getTotalSemanal(semana: string): Observable<number> {
-    return this.http.get<number>(`${this.apiUrl}/semana/${semana}/total`);
+    return from(supabase.from('pagos').select('monto').eq('semana', semana).eq('pagado', true)).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return (data || []).reduce((sum, p) => sum + p.monto, 0);
+      })
+    );
   }
 
   marcarComoPagado(id: string): Observable<Pago> {
-    return this.http.patch<Pago>(`${this.apiUrl}/${id}/pagar`, {});
+    return from(supabase.from('pagos').update({ pagado: true, fecha_pago: new Date() }).eq('id', id).select().single()).pipe(
+      map(({ data, error }) => {
+        if (error) throw error;
+        return this.mapPago(data);
+      })
+    );
   }
 }
