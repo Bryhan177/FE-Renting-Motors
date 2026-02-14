@@ -1,5 +1,4 @@
 <!-- home.component.html -->
-<!-- home.component.html -->
  @if (VerInfo) {
  <div>
 
@@ -123,7 +122,7 @@
               💲 <strong>${{ producto.precio_dia }}/día</strong> | 💲
               <strong>${{ producto.precio_semana }}/semana</strong>
             </p>
-            <button
+            <button (click)="whatsapp()"
               class="mt-4 bg-secondary hover:bg-blue-700 text-white py-2 px-5 rounded-lg transition duration-300"
             >
               ¡La Quiero!

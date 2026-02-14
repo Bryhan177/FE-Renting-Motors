@@ -17,31 +17,31 @@ export class ProductsService {
  private products: Product[] = [
     {
       id: 1,
-      nombre: 'AKT NKD 125',
-      precio_dia: 50,
-      precio_semana: 300,
-      img: 'https://www.aktmotos.com/sites/default/files/styles/webp/public/2024-09/NKD-EX754870_0.png.webp?itok=TeQwFhKt'
+      nombre: 'Pulsar 180',
+      precio_dia: 40.000,
+      precio_semana: 190.000,
+      img: '../assets/images/pulsar.png'
     },
     {
       id: 2,
-      nombre: 'AKT NKD 125',
-      precio_dia: 50,
-      precio_semana: 300,
-      img: 'https://www.aktmotos.com/sites/default/files/styles/webp/public/2024-09/AKT_JULIO195388_0.png.webp?itok=WM0veUyr'
+      nombre: 'Boxer CT 125',
+      precio_dia: 40.000,
+      precio_semana: 190.000,
+      img: '../assets/images/boxer.png'
     },
     {
       id: 3,
-      nombre: 'AKT NKD 125',
-      precio_dia: 50,
-      precio_semana: 300,
-      img: 'https://www.aktmotos.com/sites/default/files/styles/webp/public/2024-09/AKT_JULIO195379_0.png.webp?itok=_8D5HItF'
+      nombre: 'GN 125',
+      precio_dia: 40.000,
+      precio_semana: 190.000,
+      img: '../assets/images/gnegra.png'
     },
     {
       id: 4,
-      nombre: 'AKT NKD 125',
-      precio_dia: 50,
-      precio_semana: 300,
-      img: 'https://www.aktmotos.com/sites/default/files/styles/webp/public/2024-09/AKT_JULIO195367_0.png.webp?itok=NBTClC2g'
+      nombre: 'GN 125',
+      precio_dia: 40.000,
+      precio_semana: 190.000,
+      img: '../assets/images/gnazul.png'
     }
   ];
   getProducts() {

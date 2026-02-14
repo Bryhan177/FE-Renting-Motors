@@ -1,43 +1,90 @@
-<div class="documentation-container">
-  <h2>Centro de Documentación</h2>
-
-  <div class="tabs">
-    <button [class.active]="activeTab === 'vehicle'" (click)="activeTab = 'vehicle'">Vehículo</button>
-    <button [class.active]="activeTab === 'user'" (click)="activeTab = 'user'">Usuarios</button>
-    <button [class.active]="activeTab === 'contract'" (click)="activeTab = 'contract'">Contratos</button>
-    <button [class.active]="activeTab === 'other'" (click)="activeTab = 'other'">Otros</button>
+<div class="min-h-screen bg-gray-900 text-white p-6 rounded-xl">
+  
+  <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+    <div>
+      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-400">
+        🗂️ Centro de Documentación
+      </h1>
+      <p class="text-gray-400 mt-1">Gestión de seguros, contratos y licencias</p>
+    </div>
+    <button class="bg-purple-600 hover:bg-purple-700 text-white font-medium py-2 px-5 rounded-lg transition shadow-lg shadow-purple-500/20 flex items-center gap-2">
+        <span>☁️</span> Subir Documento
+    </button>
   </div>
 
-  <div class="documents-list">
-    <div class="document-card" *ngFor="let doc of filteredDocuments">
-      <div class="doc-header">
-        <h4>{{ doc.name }}</h4>
-        <span [class]="doc.status">{{ doc.status }}</span>
+  <!-- Tabs Navigation -->
+  <div class="flex flex-wrap gap-2 mb-8 bg-gray-800/50 p-1 rounded-xl w-full md:w-fit border border-gray-700">
+    <button (click)="activeTab = 'vehicle'" 
+            [class]="activeTab === 'vehicle' ? 'bg-purple-500 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-gray-700'"
+            class="px-5 py-2 rounded-lg font-medium transition duration-200">
+        🏍️ Vehículos
+    </button>
+    <button (click)="activeTab = 'user'" 
+            [class]="activeTab === 'user' ? 'bg-purple-500 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-gray-700'"
+            class="px-5 py-2 rounded-lg font-medium transition duration-200">
+        👤 Usuarios
+    </button>
+    <button (click)="activeTab = 'contract'" 
+            [class]="activeTab === 'contract' ? 'bg-purple-500 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-gray-700'"
+            class="px-5 py-2 rounded-lg font-medium transition duration-200">
+        📄 Contratos
+    </button>
+    <button (click)="activeTab = 'other'" 
+            [class]="activeTab === 'other' ? 'bg-purple-500 text-white shadow-lg' : 'text-gray-400 hover:text-white hover:bg-gray-700'"
+            class="px-5 py-2 rounded-lg font-medium transition duration-200">
+        📎 Otros
+    </button>
+  </div>
+
+  <!-- Documents Grid -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div *ngFor="let doc of filteredDocuments" 
+         class="bg-gray-800 rounded-xl p-5 border border-gray-700 hover:border-purple-500/50 hover:bg-gray-800/80 transition duration-300 cursor-pointer group relative">
+      
+      <!-- Status Badge -->
+      <div class="absolute top-3 right-3">
+          <span [ngClass]="{
+              'bg-green-500/20 text-green-400 border-green-500/40': doc.status === 'valid',
+              'bg-red-500/20 text-red-400 border-red-500/40': doc.status === 'expired',
+              'bg-yellow-500/20 text-yellow-400 border-yellow-500/40': doc.status === 'pending'
+          }" class="text-xs px-2 py-0.5 rounded border capitalize">
+              {{ doc.status }}
+          </span>
       </div>
-      <p><strong>Subido por:</strong> {{ doc.uploadedBy }}</p>
-      <p><strong>Fecha de carga:</strong> {{ doc.uploadDate }}</p>
-      <p *ngIf="doc.expirationDate"><strong>Vence:</strong> {{ doc.expirationDate }}</p>
-      <p *ngIf="doc.notes"><strong>Notas:</strong> {{ doc.notes }}</p>
 
-      <div class="doc-actions">
-        <button class="icon-button" title="Ver">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 4.5C7 4.5 2.73 8.11 1 12c1.73 3.89 6 7.5 11 7.5s9.27-3.61 11-7.5c-1.73-3.89-6-7.5-11-7.5zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/>
-          </svg>
-        </button>
-
-        <button class="icon-button" title="Editar">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-          </svg>
-        </button>
-
-        <button class="icon-button" title="Eliminar">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-          </svg>
-        </button>
+      <!-- Icon -->
+      <div class="w-12 h-12 rounded-lg bg-gray-700 flex items-center justify-center text-2xl mb-4 group-hover:bg-purple-500/20 group-hover:text-purple-400 transition">
+          {{ activeTab === 'vehicle' ? '🛵' : (activeTab === 'user' ? '🪪' : '📄') }}
       </div>
+
+      <h3 class="text-white font-bold text-lg mb-1 truncate" title="{{ doc.name }}">{{ doc.name }}</h3>
+      <p class="text-xs text-gray-500 mb-4">Subido por {{ doc.uploadedBy }} • {{ doc.uploadDate }}</p>
+
+      <div *ngIf="doc.expirationDate" class="bg-gray-900/50 p-2 rounded text-xs text-gray-400 mb-4 border border-gray-700/50">
+          Vence: <span class="text-gray-200 font-mono">{{ doc.expirationDate }}</span>
+      </div>
+
+      <p *ngIf="doc.notes" class="text-sm text-gray-400 italic mb-4 line-clamp-2">"{{ doc.notes }}"</p>
+
+      <div class="grid grid-cols-3 gap-2 mt-auto">
+          <button class="bg-gray-700 hover:bg-gray-600 text-gray-300 py-2 rounded transition flex justify-center" title="Ver">
+              👁️
+          </button>
+          <button class="bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 py-2 rounded transition flex justify-center border border-blue-500/20" title="Descargar">
+              ⬇️
+          </button>
+           <button class="bg-red-500/10 hover:bg-red-500/20 text-red-400 py-2 rounded transition flex justify-center border border-red-500/20" title="Eliminar">
+              🗑️
+          </button>
+      </div>
+
     </div>
   </div>
+
+  <!-- Empty State -->
+  <div *ngIf="filteredDocuments.length === 0" class="text-center py-20 bg-gray-800/30 rounded-xl border border-dashed border-gray-700">
+      <div class="text-5xl mb-4 opacity-30">📂</div>
+      <p class="text-gray-400">No hay documentos en esta categoría.</p>
+  </div>
+
 </div>

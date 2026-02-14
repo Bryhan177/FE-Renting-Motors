@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -23,7 +24,7 @@ export class RegisterComponent {
     password: '',
     confirmPassword: ''
   }
-  constructor(private usuariosService: UsuariosService) { }
+  constructor(private usuariosService: UsuariosService, private router: Router) { }
 
   agregarUsuario() {
     // Validaciones básicas
@@ -118,6 +119,20 @@ export class RegisterComponent {
           timer: 3000,
           background: '#22C55E',
           color: 'white',
+        }).then(() => {
+          // Redirección basada en el rol
+          switch(usuario.rol) {
+            case 'administrador':
+            case 'asesor':
+              this.router.navigate(['/dashboard']);
+              break;
+            case 'empleado':
+              this.router.navigate(['/empleados']);
+              break;
+            default:
+              this.router.navigate(['/']); // Usuario normal a home
+              break;
+          }
         });
       },
       (error) => {
@@ -125,7 +140,7 @@ export class RegisterComponent {
         Swal.fire({
           icon: 'error',
           title: 'Error',
-          text: 'No se pudo crear el usuario',
+          text: error.message || 'No se pudo crear el usuario',
           toast: true,
           position: 'top-end',
           showConfirmButton: false,

@@ -1,34 +1,75 @@
-<div class="vehicle-history-container">
-  <h2>Historial de Vehiculos</h2>
-  <div class="vehicle-card" *ngFor="let vehicle of vehicles">
-    <img [src]="vehicle.imageUrl" alt="Vehicle image" />
-    <div class="info">
-      <h3>{{ vehicle.brand }} {{ vehicle.model }} ({{ vehicle.year }})</h3>
-      <p><strong>Placa:</strong> {{ vehicle.plate }}</p>
-      <p><strong>Valor del vehículo:</strong> {{ vehicle.vehicleValue | currency:'USD' }}</p>
-      <p><strong>Fecha de inicio:</strong> {{ vehicle.startDate }}</p>
-      <p><strong>Fecha actual:</strong> {{ vehicle.currentDate }}</p>
-      <p><strong>Total ganado:</strong> {{ vehicle.totalEarned | currency:'USD' }}</p>
-      <p><strong>Estado:</strong> {{ vehicle.status }}</p>
+<div class="min-h-screen bg-gray-900 text-white p-6 rounded-xl">
+
+  <div class="flex flex-col md:flex-row justify-between items-center mb-8 gap-4">
+    <div>
+      <h1 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-orange-400">
+        🛠️ Historial de Vehículos
+      </h1>
+      <p class="text-gray-400 mt-1">Monitor de rentabilidad y estado de flota</p>
     </div>
-    <div class="actions">
-  <button class="icon-button" (click)="viewVehicle(vehicle)" title="View">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M12 4.5C7 4.5 2.73 8.11 1 12c1.73 3.89 6 7.5 11 7.5s9.27-3.61 11-7.5c-1.73-3.89-6-7.5-11-7.5zm0 13c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"/>
-    </svg>
-  </button>
+    <div class="flex gap-3">
+        <input type="text" placeholder="Buscar placa..." 
+               class="bg-gray-800 border border-gray-700 text-white text-sm rounded-lg focus:ring-yellow-500 focus:border-yellow-500 block w-full md:w-64 p-2.5" />
+    </div>
+  </div>
 
-  <button class="icon-button" (click)="editVehicle(vehicle)" title="Edit">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
-    </svg>
-  </button>
+  <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+    <div *ngFor="let vehicle of vehicles" 
+         class="bg-gray-800 rounded-xl overflow-hidden border border-gray-700 hover:border-yellow-500/50 transition duration-300 shadow-lg group">
+      
+      <!-- Card Image/Header -->
+      <div class="relative h-48 overflow-hidden bg-gray-900">
+         <img [src]="vehicle.imageUrl" alt="Moto" class="w-full h-full object-contain p-4 group-hover:scale-105 transition duration-500 opacity-90 hover:opacity-100">
+         <div class="absolute top-3 right-3">
+             <span [ngClass]="{
+                 'bg-green-500/20 text-green-400 border-green-500/40': vehicle.status === 'Active',
+                 'bg-red-500/20 text-red-400 border-red-500/40': vehicle.status === 'Inactive'
+             }" class="px-3 py-1 rounded-full text-xs font-bold border backdrop-blur-md">
+                 {{ vehicle.status === 'Active' ? 'ACTIVO' : 'INACTIVO' }}
+             </span>
+         </div>
+         <div class="absolute bottom-3 left-3 bg-black/60 backdrop-blur-md px-3 py-1 rounded-lg border border-white/10">
+             <p class="text-2xl font-black text-white tracking-widest">{{ vehicle.plate }}</p>
+         </div>
+      </div>
 
-  <button class="icon-button" (click)="deleteVehicle(vehicle)" title="Delete">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path d="M6 19a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
-    </svg>
-  </button>
-</div>
+      <!-- Content -->
+      <div class="p-5">
+        <div class="flex justify-between items-start mb-4">
+            <div>
+                <h3 class="text-lg font-bold text-white">{{ vehicle.brand }} {{ vehicle.model }}</h3>
+                <p class="text-sm text-gray-400">{{ vehicle.year }}</p>
+            </div>
+            <div class="text-right">
+                <p class="text-xs text-gray-500 uppercase">Rentabilidad</p>
+                <p class="text-xl font-bold text-green-400">+${{ vehicle.totalEarned | number }}</p>
+            </div>
+        </div>
+
+        <div class="bg-gray-900/50 rounded-lg p-3 mb-4 space-y-2 border border-gray-700/50">
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-500">Valor Vehículo:</span>
+                <span class="text-gray-300">${{ vehicle.vehicleValue | number }}</span>
+            </div>
+            <div class="flex justify-between text-sm">
+                <span class="text-gray-500">Inicio Operación:</span>
+                <span class="text-gray-300">{{ vehicle.startDate }}</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex gap-2 pt-2 border-t border-gray-700">
+            <button (click)="viewVehicle(vehicle)" class="flex-1 bg-gray-700 hover:bg-gray-600 text-white text-sm font-medium py-2 rounded-lg transition">
+                📜 Detalles
+            </button>
+            <button (click)="editVehicle(vehicle)" class="p-2 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 rounded-lg transition border border-blue-500/20">
+                ✏️
+            </button>
+             <button (click)="deleteVehicle(vehicle)" class="p-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded-lg transition border border-red-500/20">
+                🗑️
+            </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

@@ -19,7 +19,7 @@ export class MotosComponent implements OnInit {
   modalVisible: boolean = false;
   modalAsignarVisible: boolean = false;
   motoSeleccionada: Moto | null = null;
-  motoEditada: Moto = {
+  motoForm: Moto = {
     marca: '',
     modelo: '',
     placa: '',
@@ -29,14 +29,6 @@ export class MotosComponent implements OnInit {
   formularioInvalido: boolean = false;
   isEditing = false;
   editingId: string | null = null;
-
-  nuevaMoto: Moto = {
-    marca: '',
-    modelo: '',
-    placa: '',
-    precio: 0,
-    estado: 'disponible'
-  };
 
   constructor(private motosService: MotosService) {}
 
@@ -79,8 +71,8 @@ export class MotosComponent implements OnInit {
 
   agregarMoto() {
     // Validación del formulario
-    if (!this.nuevaMoto.marca.trim() || !this.nuevaMoto.modelo.trim() ||
-        !this.nuevaMoto.placa.trim() || !this.nuevaMoto.estado.trim()) {
+    if (!this.motoForm.marca.trim() || !this.motoForm.modelo.trim() ||
+        !this.motoForm.placa.trim() || !this.motoForm.estado.trim()) {
       this.formularioInvalido = true;
       Swal.fire({
         position: 'top-end',
@@ -97,7 +89,7 @@ export class MotosComponent implements OnInit {
 
     this.formularioInvalido = false;
 
-    this.motosService.createMoto(this.nuevaMoto).subscribe({
+    this.motosService.createMoto(this.motoForm).subscribe({
       next: () => {
         this.loadMotos();
         this.resetForm();
@@ -206,10 +198,14 @@ export class MotosComponent implements OnInit {
     });
   }
 
-  abrirModal(moto: Moto) {
-    this.motoEditada = { ...moto };
-    this.isEditing = true;
-    this.editingId = moto._id!;
+  abrirModal(moto: Moto | null = null) {
+    if (moto) {
+      this.motoForm = { ...moto };
+      this.isEditing = true;
+      this.editingId = moto._id!;
+    } else {
+      this.resetForm();
+    }
     this.modalVisible = true;
   }
 
@@ -221,7 +217,7 @@ export class MotosComponent implements OnInit {
   editarMoto() {
     if (!this.editingId) return;
 
-    this.motosService.updateMoto(this.editingId, this.motoEditada).subscribe({
+    this.motosService.updateMoto(this.editingId, this.motoForm).subscribe({
       next: () => {
         this.loadMotos();
         this.cerrarModal();
@@ -296,15 +292,39 @@ export class MotosComponent implements OnInit {
     });
   }
 
+  getEstadoClass(estado: string): string {
+    switch (estado) {
+      case 'disponible':
+        return 'bg-green-500/20 text-green-400 border border-green-500/30';
+      case 'en_uso':
+        return 'bg-blue-500/20 text-blue-400 border border-blue-500/30';
+      case 'en_mantenimiento':
+        return 'bg-yellow-500/20 text-yellow-400 border border-yellow-500/30';
+      case 'fuera_servicio':
+        return 'bg-red-500/20 text-red-400 border border-red-500/30';
+      default:
+        return 'bg-gray-700 text-gray-400';
+    }
+  }
+
+  getEstadoText(estado: string): string {
+    switch (estado) {
+      case 'disponible': return 'Disponible';
+      case 'en_uso': return 'En Uso';
+      case 'en_mantenimiento': return 'Mantenimiento';
+      case 'fuera_servicio': return 'Fuera Servicio';
+      default: return estado;
+    }
+  }
+
+  countMotosByState(estado: string): number {
+    return this.motos.filter(moto => moto.estado === estado).length;
+  }
+
+
+
   private resetForm(): void {
-    this.nuevaMoto = {
-      marca: '',
-      modelo: '',
-      placa: '',
-      precio: 0,
-      estado: 'disponible'
-    };
-    this.motoEditada = {
+    this.motoForm = {
       marca: '',
       modelo: '',
       placa: '',

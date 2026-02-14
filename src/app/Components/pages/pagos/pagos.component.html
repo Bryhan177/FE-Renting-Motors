@@ -1,111 +1,154 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="mb-6">
-    <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold mb-4 text-center text-secondary">💰 Gestión de Pagos Semanales</h2>
-
-    <!-- Controles de semana -->
-    <div class="flex flex-col sm:flex-row items-center justify-between mb-6 gap-4">
-      <div class="flex items-center gap-2">
-        <label class="font-semibold text-sm sm:text-base">Semana:</label>
-        <input [(ngModel)]="semanaSeleccionada" (change)="cambiarSemana()"
-               type="week" class="border p-2 rounded text-sm sm:text-base" />
+<div class="min-h-screen bg-gray-900 text-white p-6 rounded-xl">
+  
+  <div class="mb-8">
+    <div class="flex flex-col md:flex-row justify-between items-end gap-4 mb-6">
+      <div>
+        <h2 class="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-green-400 to-emerald-400">
+          💰 Gestión de Pagos
+        </h2>
+        <p class="text-gray-400 mt-1">Control de pagos semanales y estado de cuenta</p>
       </div>
-      <button (click)="generarPagosSemanales()"
-              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 text-sm sm:text-base">
-        🔄 Generar Pagos
+
+      <div class="flex items-center gap-3 bg-gray-800 p-2 rounded-xl border border-gray-700">
+        <div class="flex items-center gap-2 px-3">
+            <span class="text-gray-400 text-sm font-medium">Semana:</span>
+            <input [(ngModel)]="semanaSeleccionada" (change)="cambiarSemana()"
+               type="week" class="bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2" />
+        </div>
+        <button (click)="generarPagosSemanales()"
+                class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg transition shadow-lg shadow-blue-500/20 flex items-center gap-2">
+          <span>🔄</span> Generar
+        </button>
+      </div>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 relative overflow-hidden group">
+        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition transform group-hover:scale-110">
+            <span class="text-6xl">✅</span>
+        </div>
+        <p class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-2">Total Pagado</p>
+        <p class="text-4xl font-bold text-white">$ {{ getTotalPagado() | number }}</p>
+        <div class="mt-4 flex items-center gap-2">
+            <span class="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded font-bold border border-green-500/30">
+                {{ getPagosPagados().length }} pagos
+            </span>
+            <span class="text-xs text-gray-500">completados</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-800 p-6 rounded-xl border border-gray-700 relative overflow-hidden group">
+        <div class="absolute right-0 top-0 p-4 opacity-10 group-hover:opacity-20 transition transform group-hover:scale-110">
+            <span class="text-6xl">🚨</span>
+        </div>
+        <p class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-2">Pendiente por Cobrar</p>
+        <p class="text-4xl font-bold text-red-500">$ {{ getTotalPendiente() | number }}</p>
+        <div class="mt-4 flex items-center gap-2">
+            <span class="bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded font-bold border border-red-500/30">
+                {{ getPagosPendientes().length }} pagos
+            </span>
+            <span class="text-xs text-gray-500">pendientes</span>
+        </div>
+      </div>
+
+      <div class="bg-gray-800/50 p-6 rounded-xl border border-dashed border-gray-700 flex flex-col justify-center items-center text-center">
+        <p class="text-gray-400 text-sm font-semibold uppercase tracking-wider mb-1">Total Esperado</p>
+        <p class="text-3xl font-bold text-gray-300">$ {{ (getTotalPagado() + getTotalPendiente()) | number }}</p>
+        <p class="text-xs text-gray-500 mt-2">{{ pagos.length }} transacciones esta semana</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="flex flex-col items-center justify-center py-20 text-gray-500">
+    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mb-4"></div>
+    <p>Cargando información de pagos...</p>
+  </div>
+
+  <!-- Content -->
+  <div *ngIf="!loading" class="grid grid-cols-1 xl:grid-cols-2 gap-8">
+    
+    <!-- Columna: Pendientes -->
+    <div class="space-y-4">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-3 h-8 bg-red-500 rounded-full"></div>
+            <h3 class="text-xl font-bold text-white">Pendientes</h3>
+            <span class="bg-red-500/20 text-red-400 text-xs px-2 py-1 rounded-full">{{ getPagosPendientes().length }}</span>
+        </div>
+
+        <div *ngIf="getPagosPendientes().length === 0" class="bg-gray-800/30 rounded-xl p-8 text-center border border-gray-700/50">
+            <p class="text-gray-500">¡Todo al día! No hay pagos pendientes.</p>
+        </div>
+
+        <div *ngFor="let pago of getPagosPendientes()" 
+             class="bg-gray-800 rounded-xl p-4 border border-gray-700 hover:border-red-500/50 transition duration-300 group shadow-lg">
+            <div class="flex justify-between items-start">
+                <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-lg font-bold text-gray-300">
+                        {{ pago.conductor?.nombre?.charAt(0) || '?' }}
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-white text-lg">{{ pago.conductor?.nombre }} {{ pago.conductor?.apellido }}</h4>
+                        <p class="text-xs text-gray-400 font-mono">CC: {{ pago.conductor?.cedula }}</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-2xl font-bold text-red-500">$ {{ pago.monto | number }}</p>
+                    <p class="text-xs text-red-400">Sin pagar</p>
+                </div>
+            </div>
+            
+            <div class="mt-4 pt-4 border-t border-gray-700 flex justify-between items-center">
+                <p class="text-xs text-gray-500">{{ pago.semana }}</p>
+                <button (click)="marcarComoPagado(pago)" 
+                        class="bg-green-600 hover:bg-green-500 text-white text-sm font-medium py-2 px-4 rounded-lg transition flex items-center gap-2 shadow-lg shadow-green-900/20">
+                    <span>💳</span> Registrar Pago
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Columna: Pagados -->
+    <div class="space-y-4">
+        <div class="flex items-center gap-3 mb-2">
+            <div class="w-3 h-8 bg-green-500 rounded-full"></div>
+            <h3 class="text-xl font-bold text-white">Realizados</h3>
+             <span class="bg-green-500/20 text-green-400 text-xs px-2 py-1 rounded-full">{{ getPagosPagados().length }}</span>
+        </div>
+
+        <div *ngIf="getPagosPagados().length === 0" class="bg-gray-800/30 rounded-xl p-8 text-center border border-gray-700/50">
+            <p class="text-gray-500">Aún no hay pagos registrados esta semana.</p>
+        </div>
+
+        <div *ngFor="let pago of getPagosPagados()" 
+             class="bg-gray-800/50 rounded-xl p-4 border border-gray-700/50 hover:bg-gray-800 transition duration-300 opacity-75 hover:opacity-100">
+            <div class="flex justify-between items-center">
+                 <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-full bg-green-900/30 flex items-center justify-center text-green-500 text-sm">
+                        ✓
+                    </div>
+                    <div>
+                        <h4 class="font-bold text-gray-300">{{ pago.conductor?.nombre }} {{ pago.conductor?.apellido }}</h4>
+                        <p class="text-xs text-gray-500">{{ pago.fechaPago | date:'mediumDate' }}</p>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <p class="text-xl font-bold text-green-500">$ {{ pago.monto | number }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <!-- Empty State Total -->
+  <div *ngIf="!loading && pagos.length === 0" class="text-center py-12 bg-gray-800/50 rounded-xl border border-gray-700 mt-8">
+      <div class="text-6xl mb-4 opacity-50">📅</div>
+      <h3 class="text-xl font-bold text-white">Semana sin registros</h3>
+      <p class="text-gray-400 mt-2 mb-6 max-w-md mx-auto">No se han generado cobros para la semana <strong>{{ semanaSeleccionada }}</strong>.</p>
+      <button (click)="generarPagosSemanales()" class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition">
+          Generar Pagos Ahora
       </button>
-    </div>
-
-    <!-- Resumen de pagos -->
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-      <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-        <h3 class="text-lg font-semibold text-green-800">Pagado</h3>
-        <p class="text-2xl font-bold text-green-600">$ {{ getTotalPagado() | number }}</p>
-        <p class="text-sm text-green-700">{{ getPagosPagados().length }} pagos realizados</p>
-      </div>
-      <div class="bg-red-50 border border-red-200 rounded-lg p-4">
-        <h3 class="text-lg font-semibold text-red-800">Pendiente</h3>
-        <p class="text-2xl font-bold text-red-600">$ {{ getTotalPendiente() | number }}</p>
-        <p class="text-sm text-red-700">{{ getPagosPendientes().length }} pagos pendientes</p>
-      </div>
-      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-        <h3 class="text-lg font-semibold text-blue-800">Total</h3>
-        <p class="text-2xl font-bold text-blue-600">$ {{ (getTotalPagado() + getTotalPendiente()) | number }}</p>
-        <p class="text-sm text-blue-700">{{ pagos.length }} pagos en total</p>
-      </div>
-    </div>
   </div>
 
-  <!-- Loading indicator -->
-  <div *ngIf="loading" class="text-center py-8">
-    <div class="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-    <p class="mt-2 text-gray-600">Cargando pagos...</p>
-  </div>
-
-  <!-- Lista de pagos -->
-  <div *ngIf="!loading" class="space-y-4">
-    <!-- Pagos Pendientes -->
-    <div *ngIf="getPagosPendientes().length > 0" class="bg-white border border-red-200 rounded-lg shadow">
-      <div class="bg-red-50 px-4 py-3 border-b border-red-200">
-        <h3 class="text-lg font-semibold text-red-800">🚨 Pagos Pendientes</h3>
-      </div>
-      <div class="p-4">
-        <div class="space-y-3">
-          <div *ngFor="let pago of getPagosPendientes()"
-               class="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-red-50 rounded border border-red-200">
-            <div class="flex-1">
-              <p class="font-semibold text-gray-800">
-                {{ pago.conductor?.nombre }} {{ pago.conductor?.apellido }}
-              </p>
-              <p class="text-sm text-gray-600">Cédula: {{ pago.conductor?.cedula }}</p>
-              <p class="text-sm text-gray-600">Semana: {{ pago.semana }}</p>
-            </div>
-            <div class="flex items-center gap-3 mt-2 sm:mt-0">
-              <span class="text-lg font-bold text-red-600">$ {{ pago.monto | number }}</span>
-              <button (click)="marcarComoPagado(pago)"
-                      class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 text-sm">
-                ✅ Marcar Pagado
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Pagos Realizados -->
-    <div *ngIf="getPagosPagados().length > 0" class="bg-white border border-green-200 rounded-lg shadow">
-      <div class="bg-green-50 px-4 py-3 border-b border-green-200">
-        <h3 class="text-lg font-semibold text-green-800">✅ Pagos Realizados</h3>
-      </div>
-      <div class="p-4">
-        <div class="space-y-3">
-          <div *ngFor="let pago of getPagosPagados()"
-               class="flex flex-col sm:flex-row sm:items-center justify-between p-3 bg-green-50 rounded border border-green-200">
-            <div class="flex-1">
-              <p class="font-semibold text-gray-800">
-                {{ pago.conductor?.nombre }} {{ pago.conductor?.apellido }}
-              </p>
-              <p class="text-sm text-gray-600">Cédula: {{ pago.conductor?.cedula }}</p>
-              <p class="text-sm text-gray-600">Semana: {{ pago.semana }}</p>
-              <p class="text-sm text-gray-500" *ngIf="pago.fechaPago">
-                Pagado el: {{ pago.fechaPago | date:'dd/MM/yyyy' }}
-              </p>
-            </div>
-            <div class="flex items-center gap-3 mt-2 sm:mt-0">
-              <span class="text-lg font-bold text-green-600">$ {{ pago.monto | number }}</span>
-              <span class="bg-green-100 text-green-800 px-3 py-1 rounded-full text-sm font-semibold">
-                Pagado
-              </span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Sin pagos -->
-    <div *ngIf="pagos.length === 0" class="text-center py-8">
-      <div class="text-gray-400 text-6xl mb-4">💰</div>
-      <h3 class="text-lg font-semibold text-gray-600 mb-2">No hay pagos para esta semana</h3>
-      <p class="text-gray-500">Genera los pagos semanales o selecciona otra semana.</p>
-    </div>
-  </div>
 </div>

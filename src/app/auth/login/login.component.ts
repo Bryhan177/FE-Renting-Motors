@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import e from 'express';
+import { UsuariosService } from '../../service/usuarios.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -15,33 +16,51 @@ export class LoginComponent {
   email: string = '';
   password: string = '';
   error: string = '';
-  role: string = '';
 
-  constructor(private router: Router) {}
+
+  constructor(private router: Router, private usuariosService: UsuariosService) {}
 
   onLogin() {
-    if (!this.role) {
-      this.error = 'Por favor, seleccione un rol';
+    if (!this.email || !this.password) {
+      this.error = 'Por favor, ingrese correo y contraseña';
       return;
     }
 
-    if (
-      this.role === 'administrador' &&
-      this.email === 'admin@gmail.com' &&
-      this.password === 'admin123'
-    ) {
-      this.router.navigate(['dashboard']);
-    } else if (
-      this.role === 'empleado' &&
-      this.email === 'empleado@gmail.com' &&
-      this.password === 'empleado123'
-    ) {
-      this.router.navigate(['empleados']);
-    } else if (this.role === 'asesor') {
-      this.error = 'Acceso de asesor en proceso';
-    } else {
-      this.error = 'Credenciales inválidas';
-    }
+    this.usuariosService.login(this.password, this.email).subscribe({
+      next: (usuario) => {
+        // Redirección basada en el rol obtenido de la base de datos
+        Swal.fire({
+          icon: 'success',
+          title: 'Bienvenido',
+          text: `Has iniciado sesión como ${usuario.nombre}`,
+          timer: 2000,
+          showConfirmButton: false
+        }).then(() => {
+          switch(usuario.rol) {
+            case 'administrador':
+            case 'asesor':
+              this.router.navigate(['/dashboard']);
+              break;
+            case 'empleado':
+              this.router.navigate(['/empleados']);
+              break;
+            default:
+              this.router.navigate(['/']); // Usuario normal a home
+              break;
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Error en login:', err);
+        this.error = 'Credenciales inválidas o error en el sistema';
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de inicio de sesión',
+          text: err.message || 'No se pudo iniciar sesión',
+          timer: 3000
+        });
+      }
+    });
   }
   goToRegister() {
     this.router.navigate(['register']);

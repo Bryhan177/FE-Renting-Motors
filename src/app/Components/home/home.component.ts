@@ -59,6 +59,13 @@ export class HomeComponent implements OnInit{
   ngOnInit(): void {
     this.productos = this.ProductsService.getProducts();
   }
+whatsapp(){
+  const telefono = '573116433560';
+  const mensaje = encodeURIComponent('Hola, quiero esta moto. ¿Sigue disponible?');
+  window.open(`https://wa.me/${telefono}?text=${mensaje}`, '_blank','noopener,noreferrer');
+
+}
+
   // prueba(){
   //   this.ProductsService.getProducts;
   //   console.log(this.ProductsService);

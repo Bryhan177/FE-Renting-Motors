@@ -1,49 +1,133 @@
-<div class="px-4 sm:px-6 lg:px-8">
-  <div class="absolute">
-    <button class="absolute top-4 left-4 goHome text-sm sm:text-base" (click)="goHome()">Volver</button>
-  </div>
+<div class="flex h-screen bg-gray-900 text-white overflow-hidden">
+  
+  <!-- Sidebar -->
+  <aside class="w-64 bg-black border-r border-gray-800 hidden md:flex flex-col">
+    <div class="p-6 flex items-center justify-center">
+      <img src="assets/images/log_fondo_negro.png" alt="Logo" class="h-12">
+    </div>
 
-  <div class="container mx-auto mt-10 p-4 sm:p-6 fondo rounded-xl shadow-md">
-    <section class="max-w-4xl mx-auto mt-10 fondo p-4 sm:p-6 rounded-xl shadow-md">
-      <div class="flex flex-col md:flex-row items-center gap-4 sm:gap-6">
-        <!-- Foto de perfil -->
-        <img [src]="empleado.foto" alt="Foto perfil"
-             class="w-32 h-32 sm:w-40 sm:h-40 rounded-full border-4 border-secondary object-cover shadow-md" />
+    <nav class="flex-1 px-4 py-4 space-y-2">
+      <a href="#" class="flex items-center gap-3 px-4 py-3 bg-secondary/20 text-secondary rounded-lg font-medium">
+        <span>📊</span> Dashboard
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
+        <span>🛵</span> Mis Asignaciones
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
+        <span>📝</span> Reportes
+      </a>
+      <a href="#" class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:bg-gray-800 hover:text-white rounded-lg transition">
+        <span>⚙️</span> Configuración
+      </a>
+    </nav>
 
-        <!-- Información del empleado -->
-        <div class="flex-1 text-center md:text-left">
-          <h2 class="text-xl sm:text-2xl lg:text-3xl font-bold text-secondary mb-2">{{ empleado.nombre }}</h2>
-          <div class="space-y-1 text-sm sm:text-base">
-            <p class="text-white">📛 Cédula: <span class="font-medium">{{ empleado.cedula }}</span></p>
-            <p class="text-white">📧 Correo: <span class="font-medium">{{ empleado.correo }}</span></p>
-            <p class="text-white">📱 Teléfono: <span class="font-medium">{{ empleado.telefono }}</span></p>
-            <p class="text-white">📅 Ingreso: <span class="font-medium">{{ empleado.fechaIngreso }}</span></p>
-            <p class="text-white">🛵 Motos asignadas: <span class="font-medium">{{ empleado.motosAsignadas }}</span></p>
-            <p class="mt-2 text-white">
-              Estado:
-              <span [ngClass]="{
-                'bg-green-100 text-green-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm': empleado.estado === 'Activo',
-                'bg-yellow-100 text-yellow-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm': empleado.estado === 'En vacaciones',
-                'bg-red-100 text-red-700 px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm': empleado.estado === 'Inactivo'
-              }">
-                {{ empleado.estado }}
-              </span>
-            </p>
-          </div>
+    <div class="p-4 border-t border-gray-800">
+      <button (click)="goHome()" class="w-full flex items-center gap-2 px-4 py-2 text-gray-400 hover:text-red-500 transition">
+        <span>🚪</span> Cerrar Sesión
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col overflow-y-auto relative">
+    <!-- Header Mobile -->
+    <header class="md:hidden flex items-center justify-between p-4 bg-black border-b border-gray-800">
+      <img src="assets/images/log_fondo_negro.png" alt="Logo" class="h-8">
+      <button (click)="goHome()" class="text-gray-400">🚪</button>
+    </header>
+
+    <!-- Content Container -->
+    <div class="p-6 md:p-10 max-w-7xl mx-auto w-full">
+      
+      <!-- Welcome Section -->
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h1 class="text-3xl font-bold text-white">Hola, {{ empleado.nombre.split(' ')[0] }} 👋</h1>
+          <p class="text-gray-400">Aquí está el resumen de tu actividad hoy.</p>
+        </div>
+        <div class="flex items-center gap-4">
+           <div class="text-right hidden md:block">
+              <p class="text-sm font-semibold text-white">{{ empleado.nombre }}</p>
+              <p class="text-xs text-secondary">{{ empleado.rol }}</p>
+           </div>
+           <img [src]="empleado.foto" alt="Avatar" class="w-12 h-12 rounded-full border-2 border-secondary object-cover">
         </div>
       </div>
 
-      <!-- Botones de acción -->
-      <div class="mt-6 flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center md:justify-end">
-        <button (click)="editarEmpleado()"
-                class="bg-blue-500 hover:bg-blue-600 text-white px-3 sm:px-4 py-2 rounded-lg shadow text-sm sm:text-base">
-          ✏️ Editar Perfil
-        </button>
-        <button (click)="cambiarEstado()"
-                class="bg-red-500 hover:bg-red-600 text-white px-3 sm:px-4 py-2 rounded-lg shadow text-sm sm:text-base">
-          🔄 Cambiar Estado
-        </button>
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+        <div *ngFor="let stat of stats" class="bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-700 hover:border-secondary/50 transition duration-300">
+          <div class="flex items-center justify-between mb-4">
+            <div [class]="'w-10 h-10 rounded-full flex items-center justify-center text-xl ' + stat.bg + ' ' + stat.color">
+              {{ stat.icon }}
+            </div>
+            <span [class]="'text-sm font-medium ' + (stat.title === 'Estado' ? (empleado.estado === 'Activo' ? 'text-green-400' : 'text-yellow-400') : 'text-gray-400')">
+              {{ stat.title === 'Estado' ? '' : '+2.5%' }}
+            </span>
+          </div>
+          <h3 class="text-3xl font-bold text-white mb-1">{{ stat.value }}</h3>
+          <p class="text-gray-400 text-sm">{{ stat.title }}</p>
+        </div>
       </div>
-    </section>
-  </div>
+
+      <!-- Dashboard Sections -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Recent Activity -->
+        <div class="lg:col-span-2 bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg">
+          <div class="flex items-center justify-between mb-6">
+            <h2 class="text-xl font-bold text-white">Actividad Reciente</h2>
+            <button class="text-sm text-secondary hover:underline">Ver todo</button>
+          </div>
+          <div class="space-y-4">
+            <div *ngFor="let actividad of actividadesRecientes" class="flex items-center p-3 rounded-lg hover:bg-gray-700/50 transition">
+              <div class="w-10 h-10 rounded-full bg-gray-700 flex items-center justify-center text-lg mr-4">
+                {{ actividad.tipo === 'Mantenimiento' ? '🔧' : (actividad.tipo === 'Entrega' ? '🚚' : '⚠️') }}
+              </div>
+              <div class="flex-1">
+                <h4 class="text-white font-medium">{{ actividad.descripcion }}</h4>
+                <p class="text-xs text-gray-400">{{ actividad.fecha }}</p>
+              </div>
+              <span [class]="'px-3 py-1 rounded-full text-xs font-medium ' + 
+                (actividad.estado === 'Completado' ? 'bg-green-500/20 text-green-400' : 'bg-yellow-500/20 text-yellow-400')">
+                {{ actividad.estado }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile / Status Card -->
+        <div class="bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg flex flex-col items-center text-center">
+          <div class="relative mb-4">
+            <img [src]="empleado.foto" class="w-24 h-24 rounded-full border-4 border-gray-700 object-cover">
+            <div [class]="'absolute bottom-0 right-0 w-6 h-6 rounded-full border-4 border-gray-800 ' + (empleado.estado === 'Activo' ? 'bg-green-500' : 'bg-yellow-500')"></div>
+          </div>
+          <h2 class="text-xl font-bold text-white">{{ empleado.nombre }}</h2>
+          <p class="text-gray-400 text-sm mb-6">{{ empleado.rol }}</p>
+          
+          <div class="w-full space-y-3">
+             <div class="flex justify-between text-sm py-2 border-b border-gray-700">
+               <span class="text-gray-400">ID Empleado</span>
+               <span class="text-white font-medium">EMP-{{ empleado.cedula.slice(-4) }}</span>
+             </div>
+             <div class="flex justify-between text-sm py-2 border-b border-gray-700">
+               <span class="text-gray-400">Teléfono</span>
+               <span class="text-white font-medium">{{ empleado.telefono }}</span>
+             </div>
+             <div class="flex justify-between text-sm py-2 border-b border-gray-700">
+               <span class="text-gray-400">Ingreso</span>
+               <span class="text-white font-medium">{{ empleado.fechaIngreso }}</span>
+             </div>
+          </div>
+
+          <button (click)="toggleEstado()" 
+            [class]="'mt-6 w-full py-2 rounded-lg font-semibold transition ' + (empleado.estado === 'Activo' ? 'bg-red-500/20 text-red-500 hover:bg-red-500/30' : 'bg-green-500/20 text-green-500 hover:bg-green-500/30')">
+            {{ empleado.estado === 'Activo' ? 'Marcar En Descanso' : 'Marcar Activo' }}
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
 </div>
