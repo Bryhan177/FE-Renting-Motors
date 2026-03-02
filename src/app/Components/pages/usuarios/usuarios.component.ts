@@ -3,7 +3,7 @@ import { Empleado } from '../../../shared/interfaces/empleados';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { Usuario } from '../../../shared/interfaces/usuario';
+import { Usuario, CreateUsuarioPayload } from '../../../shared/interfaces/usuario';
 import { UsuariosService } from '../../../service/usuarios.service';
 import { PagosService } from '../../../service/pagos.service';
 import { MotosService } from '../../../service/motos.service';
@@ -32,14 +32,15 @@ export class UsuariosComponent implements OnInit{
   vistaReportes = false;
   conductoresAsignados: Set<string> = new Set();
 
-  nuevoUsuario: Usuario = {
+  nuevoUsuario: CreateUsuarioPayload = {
     nombre: '',
     apellido: '',
     email: '',
     cedula: 0,
     telefono: '',
     rol: 'empleado',
-    activo: true
+    activo: true,
+    password: ''
   };
   constructor(
     private usuariosService: UsuariosService,
@@ -113,7 +114,8 @@ export class UsuariosComponent implements OnInit{
       cedula: 0,
       telefono: '',
       rol: 'empleado',
-      activo: true
+      activo: true,
+      password: ''
     };
     this.modoEdicion = false;
     this.usuarioEditando = null;
@@ -253,7 +255,8 @@ export class UsuariosComponent implements OnInit{
       cedula: 0,
       telefono: '',
       rol: 'empleado',
-      activo: true
+      activo: true,
+      password: ''
     };
     this.modoEdicion = false;
     this.usuarioEditando = null;
